@@ -20,7 +20,7 @@ function Navbar() {
     ];
 
     return (
-        <nav className="w-full h-24 bg-PrimaryBG py-2 px-4 text-black shadow-md backdrop-blur-2xl backdrop-saturate-200 font-body border-b-1">
+        <nav className=" h-24 bg-PrimaryBG py-2 px-4 text-black shadow-md backdrop-blur-2xl backdrop-saturate-200 font-body border-b-1">
             <div className="container mx-auto flex items-center justify-between h-full">
                 <Link to="/" className="mr-4 text-PrimaryColors block cursor-pointer py-1 text-5xl font-bold text-inherit antialiased items-center">
                     <span>Exercise</span>
