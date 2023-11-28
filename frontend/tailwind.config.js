@@ -19,7 +19,28 @@ export default {
     },
     width: {
       '128': '36rem',
+    },
+    screens: {
+      'sm': '640px',
+      // => @media (min-width: 640px) { ... }
+
+      'md': '768px',
+      // => @media (min-width: 768px) { ... }
+
+      'lg': '1024px',
+      // => @media (min-width: 1024px) { ... }
+
+      'xl': '1280px',
+      // => @media (min-width: 1280px) { ... }
+
+      '2xl': '1536px',
+      // => @media (min-width: 1536px) { ... }
+      'CollapseCard-xl': '1815px',
+      'CollapseCard-lg': '1405px',
+      'CollapseCard-sm': '845px',
+      'CollapseCard-tiny': '685px',
     }
+    
   },
   plugins: [],
 }

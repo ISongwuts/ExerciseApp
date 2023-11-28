@@ -3,8 +3,8 @@ import React from 'react'
 function Footer() {
     return (
         <footer
-            className="bg-neutral-200 text-center dark:bg-neutral-700 lg:text-left border-t ">
-            <div className=" text-PrimaryColors font-body font-bold text-xl p-6 text-center text-neutral-700 dark:text-neutral-200">
+            className=" w-[100%] text-center bottom-0 bg-neutral-200 dark:bg-neutral-700 border-t">
+            <div className=" text-PrimaryColors font-body font-bold text-xl xl:p-6 max-xl:p-4 max-lg:p-3 max-sm:p-2 text-neutral-700 dark:text-neutral-200">
                 © 2023 Copyright:
                 <a
                     className="text-neutral-800 dark:text-neutral-400"

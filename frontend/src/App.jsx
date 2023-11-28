@@ -8,7 +8,7 @@ import ContactPage from "./Pages/ContactPage/ContactPage.jsx";
 
 function App() {
   return (
-    <div className="  h-screen bg-PrimaryBG">
+    <div className=" CollapseCard-xl:h-screen  bg-PrimaryBG flex flex-col justify-between">
       <Router>
         <Navbar />
         <Routes>

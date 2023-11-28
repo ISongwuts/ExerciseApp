@@ -3,14 +3,44 @@ import React, { useState} from 'react'
 function Category() {
     const [activeCategory, setActiveCategory] = useState("All")
     const categoryList = ["All", "Chest", "Abdominal", "Arm", "Leg", "Bottom"]
+    const [IsCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
 
     const handleCategory = (category) => {
         setActiveCategory(category)
+        console.log(IsCategoryMenuOpen)
     }
+
+    const CategorySlider = (props) => {
+        return(
+            <ul className={`${props.isCategoryOpen ? 'flex' : 'hidden'} flex flex-row space-x-4 `}>
+                {categoryList.map((item, index) => {
+                    return(
+                        <a className={`border-2 rounded-b-myConf hover:bg-PrimaryColors hover:text-PrimaryBG duration-200 ${activeCategory === item ? 'bg-PrimaryColors text-PrimaryBG border-PrimaryColors' : 'border-transparent'}`} 
+                            href="#"
+                            onClick={()=>handleCategory(item)}
+                        >
+                            <li className=' mx-3' id={index}>{item}</li></a>
+                    )
+                })}
+            </ul>
+        )
+    }
+
+    const toggleCategoryMenu = () => {
+        setIsCategoryMenuOpen(!IsCategoryMenuOpen);
+    };
     
     return (
-        <div className=' m-10 font-body'>
-            <ul className='flex flex-row space-x-4 justify-center'>
+        <div className=' m-10 font-body flex flex-row justify-center'>
+            <div className='lg:hidden px-4'>
+                <button 
+                    className='border-2 p-3 rounded-myConf hover:bg-PrimaryColors hover:text-PrimaryBG hover:shadow-sm hover:shadow-InactivePrimary'
+                    onClick={toggleCategoryMenu}
+                >
+                Category {">"}   
+                </button>
+            </div>
+            <ul className='flex flex-row space-x-4 justify-center max-lg:hidden'>
                 {categoryList.map((item, index) => {
                     return(
                         <a className={`border-2 rounded-myConf hover:bg-PrimaryColors hover:text-PrimaryBG duration-200 ${activeCategory === item ? 'bg-PrimaryColors text-PrimaryBG border-PrimaryColors' : 'border-transparent'}`} 
@@ -21,6 +51,7 @@ function Category() {
                     )
                 })}
             </ul>
+            <CategorySlider isCategoryOpen={IsCategoryMenuOpen}/>
         </div>
     )
 }

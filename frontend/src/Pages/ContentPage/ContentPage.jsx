@@ -15,10 +15,10 @@ function ContentPage() {
     { title: "title 8", desc: "This is some random words for test" },
   ];
   return (
-    <div className="text-PrimaryColors flex flex-col font-body h-auto">
+    <div className="text-PrimaryColors flex flex-col font-body h-auto justify-center">
       <Category />
       <div className="mx-28">
-        <div className="grid grid-cols-4 gap-8 justify-items-center">
+        <div className="grid CollapseCard-xl:grid-cols-4 max-CollapseCard-xl:grid-cols-3 max-CollapseCard-lg:grid-cols-2 max-CollapseCard-tiny:grid-cols-1 gap-8 justify-items-center">
           {contentData.map((attr, index) => {
             return (
               <ContentCard title={attr.title} desc={attr.desc} />
