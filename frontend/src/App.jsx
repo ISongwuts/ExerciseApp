@@ -5,19 +5,23 @@ import Footer from "./components/Footer/footer.jsx";
 import HomePage from "./Pages/HomePage/HomePage.jsx";
 import ContentPage from "./Pages/ContentPage/ContentPage.jsx";
 import ContactPage from "./Pages/ContactPage/ContactPage.jsx";
+import ArticlePage from "./Pages/ArticlePage/ArticlePage.jsx";
 
 function App() {
   return (
-    <div className=" CollapseCard-xl:h-screen  bg-PrimaryBG flex flex-col justify-between">
+    <div className="flex flex-col min-h-screen bg-PrimaryBG">
       <Router>
         <Navbar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/content" element={<ContentPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-        </Routes>
+        <div className="flex-grow overflow-auto ">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/content" element={<ContentPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/content/article/:articleId" element={<ArticlePage />} />
+          </Routes>
+        </div>
+        <Footer />
       </Router>
-      <Footer />
     </div>
   );
 }
