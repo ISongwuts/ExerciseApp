@@ -4,12 +4,11 @@ import sunIcon from '../../assets/svg/icons/sun.svg';
 import moonIcon from '../../assets/svg/icons/moon.svg';
 import { Link, useLocation } from 'react-router-dom';
 
-function Navbar() {
+function Navbar(props) {
     const [isSunIcon, setIsSunIcon] = useState(true);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const location = useLocation();
-    
 
     const toggleIcon = () => {
         setIsSunIcon(!isSunIcon);
@@ -54,7 +53,7 @@ function Navbar() {
     }
 
     return (
-        <nav className="h-24 bg-PrimaryBG py-2 px-4 text-black shadow-md backdrop-blur-2xl backdrop-saturate-200 font-body border-b-1">
+        <nav className="h-24 bg-[transparent] py-2 px-4 text-black shadow-md backdrop-blur-2xl  font-body border-b-1">
             <div className="container mx-auto flex items-center justify-between h-full">
                 <Link
                     to="/"
@@ -83,7 +82,7 @@ function Navbar() {
                             </li>
                         ))}
                         <li>
-                            <a href="#">
+                            <a href="#" onClick={props.themeModeHandler}>
                                 <img
                                     src={currentIcon}
                                     className="w-10 h-10"
@@ -93,7 +92,7 @@ function Navbar() {
                             </a>
                         </li>
                         <button
-                            className=" rounded-myConf py-2 px-4 text-3xl font-bold uppercase text-PrimaryBG bg-PrimaryColors border-2 lg:inline-block hover:text-PrimaryColors hover:border-2 hover:bg-PrimaryBG duration-200"
+                            className=" rounded-myConf py-2 px-4 text-3xl font-bold uppercase text-PrimaryBG bg-PrimaryColors border-2 border-PrimaryColors lg:inline-block hover:text-PrimaryColors hover:border-2 hover:bg-[transparent] duration-200"
                             type="button"
                             data-ripple-light="true"
                         >

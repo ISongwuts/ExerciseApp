@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from "./components/Navbar/Navbar.jsx";
 import Footer from "./components/Footer/footer.jsx";
@@ -8,10 +8,17 @@ import ContactPage from "./Pages/ContactPage/ContactPage.jsx";
 import ArticlePage from "./Pages/ArticlePage/ArticlePage.jsx";
 
 function App() {
+  const [isThemeMode, setIsThemeMode] = useState("light")
+
+  const themeModeHandler = () => {
+        setIsThemeMode(isThemeMode === "light" ? "dark" : "light")
+        console.log(isThemeMode)
+  }
+
   return (
-    <div className="flex flex-col min-h-screen bg-PrimaryBG">
+    <div className={`flex flex-col min-h-screen ${isThemeMode === "light" ? "bg-[#fff7ed]" : "bg-PrimaryBG"}`}>
       <Router>
-        <Navbar />
+        <Navbar themeModeHandler={themeModeHandler}/>
         <div className="flex-grow overflow-auto ">
           <Routes>
             <Route path="/" element={<HomePage />} />

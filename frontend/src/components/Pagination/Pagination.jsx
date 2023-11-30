@@ -11,7 +11,7 @@ function Pagination() {
                 <ul className="flex flex-row justify-between">
                     {paginationItems.map((item, index) => {
                         return (
-                            <a className={`${activePagination === item ? 'bg-PrimaryColors text-PrimaryBG':'bg-PrimaryBG text-PrimaryColors'} border p-1 px-3 duration-200 hover:bg-PrimaryColors hover:text-PrimaryBG`} 
+                            <a className={`${activePagination === item ? ' bg-PrimaryColors text-PrimaryBG border-PrimaryColors':'bg-[transparent] text-PrimaryColors'} border p-1 px-3 duration-200 hover:bg-PrimaryColors hover:border-PrimaryColors hover: hover:text-PrimaryBG`} 
                                 href="#"
                                 onClick={() => paginationHandle(item)}
                             >
