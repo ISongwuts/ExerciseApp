@@ -1,33 +1,29 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Navbar from './components/Navbar/Navbar'
+import Footer from './components/Footer/Footer'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import PostPage from './Pages/PostPage/PostPage';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isThemeMode, setIsThemeMode] = useState("dark")
 
+  const themeModeHandler = () => {
+    setIsThemeMode(isThemeMode === "light" ? "dark" : "light")
+    console.log(isThemeMode)
+  }
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className={`flex flex-col min-h-screen ${isThemeMode === "light" ? "bg-[#fff7ed]" : "bg-PrimaryBG"}`}>
+        <Router>
+          <Navbar themeModeHandler={themeModeHandler} />
+          <div className="flex-grow overflow-auto ">
+            <Routes>
+              <Route path='/post' element={<PostPage />}/>
+            </Routes>
+          </div>
+          <Footer />
+        </Router>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
