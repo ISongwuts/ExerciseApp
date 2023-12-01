@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import LoginModal from '../LoginModal/LoginModal';
 import sunIcon from '../../assets/svg/icons/sun.svg';
 import moonIcon from '../../assets/svg/icons/moon.svg';
 import { Link, useLocation } from 'react-router-dom';
@@ -10,13 +10,13 @@ function Navbar(props) {
     const [isHovered, setIsHovered] = useState(false);
     const location = useLocation();
 
+
     const toggleIcon = () => {
         setIsSunIcon(!isSunIcon);
     };
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
-        console.log(isMobileMenuOpen)
     };
 
     const currentIcon = isSunIcon ? sunIcon : moonIcon;
@@ -95,6 +95,7 @@ function Navbar(props) {
                             className=" rounded-myConf py-2 px-4 text-3xl font-bold uppercase text-PrimaryBG bg-PrimaryColors border-2 border-PrimaryColors lg:inline-block hover:text-PrimaryColors hover:border-2 hover:bg-[transparent] duration-200"
                             type="button"
                             data-ripple-light="true"
+                            onClick={props.loginModalHandler}
                         >
                             <span>Login</span>
                         </button>

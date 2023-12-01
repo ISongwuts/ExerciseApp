@@ -6,9 +6,30 @@ import HomePage from "./Pages/HomePage/HomePage.jsx";
 import ContentPage from "./Pages/ContentPage/ContentPage.jsx";
 import ContactPage from "./Pages/ContactPage/ContactPage.jsx";
 import ArticlePage from "./Pages/ArticlePage/ArticlePage.jsx";
+import LoginModal from "./components/LoginModal/LoginModal.jsx";
+import RegisterModal from "./components/RegisterModal/RegisterModal.jsx";
 
 function App() {
-  const [isThemeMode, setIsThemeMode] = useState("light")
+  const [isThemeMode, setIsThemeMode] = useState("dark")
+  const [isShowLoginModal, setIsShowLoginModal] = useState(false);
+  const [isShowRegisterModal, setIsShowRegisterModal] = useState(false);
+
+  const onCloseModalHandler = () => {
+      setIsShowLoginModal(false);
+      setIsShowRegisterModal(false);
+  }
+
+  const showLoginModalHandler = () => {
+      setIsShowRegisterModal(false);
+      setIsShowLoginModal(!isShowLoginModal);
+      console.log(isShowLoginModal);
+  }
+
+  const showRegisterModalHandler = () => {
+    setIsShowLoginModal(false);
+    setIsShowRegisterModal(!isShowRegisterModal);
+    console.log(isShowRegisterModal);
+  }
 
   const themeModeHandler = () => {
         setIsThemeMode(isThemeMode === "light" ? "dark" : "light")
@@ -17,8 +38,10 @@ function App() {
 
   return (
     <div className={`flex flex-col min-h-screen ${isThemeMode === "light" ? "bg-[#fff7ed]" : "bg-PrimaryBG"}`}>
+      <LoginModal isShowModal={isShowLoginModal} closeModalHandler={onCloseModalHandler} loginModalHandler={showLoginModalHandler} registerModalHandler={showRegisterModalHandler}/>
+      <RegisterModal isShowModal={isShowRegisterModal} closeModalHandler={onCloseModalHandler} loginModalHandler={showLoginModalHandler} registerModalHandler={showRegisterModalHandler}/>
       <Router>
-        <Navbar themeModeHandler={themeModeHandler}/>
+        <Navbar themeModeHandler={themeModeHandler} loginModalHandler={showLoginModalHandler}/>
         <div className="flex-grow overflow-auto ">
           <Routes>
             <Route path="/" element={<HomePage />} />
