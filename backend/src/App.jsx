@@ -3,6 +3,7 @@ import Navbar from './components/Navbar/Navbar'
 import Footer from './components/Footer/Footer'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PostPage from './Pages/PostPage/PostPage';
+import DatabasePage from './Pages/DatabasePage/DatabasePage';
 
 function App() {
   const [isThemeMode, setIsThemeMode] = useState("dark")
@@ -19,6 +20,7 @@ function App() {
           <div className="flex-grow overflow-auto ">
             <Routes>
               <Route path='/post' element={<PostPage />}/>
+              <Route path='/database' element={<DatabasePage />}/>
             </Routes>
           </div>
           <Footer />
