@@ -18,10 +18,26 @@ const db = mysql.createConnection({
     port: process.env.port
 });
 
+
 app.get('/api/post', async (req, res) => {
     try {
         const result = await new Promise((resolve, reject) => {
             db.query("SELECT * FROM post", (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            });
+        });
+        res.send(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.get('/api/category', async (req, res) => {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            db.query("SELECT * FROM category", (err, result) => {
                 if (err) reject(err);
                 else resolve(result);
             });
@@ -40,10 +56,10 @@ app.post('/api/upload', async (req, res) => {
 
     try {
         const postData = req.body; // Extract data from the request body
-        const insertQuery = 'INSERT INTO post (post_title, post_desc, post_article, post_feedback, post_date, post_image, post_author, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        const insertQuery = 'INSERT INTO post (post_title, post_desc, post_article, post_feedback, post_date, post_author, category_id) VALUES (?, ?, ?, ?, ?, ?, ?)';
 
         // Execute the SQL query with the extracted data
-        db.query(insertQuery, [postData.title, postData.description, postData.content,0, postData.date, postData.image, postData.author, postData.category], (error, result) => {
+        db.query(insertQuery, [postData.title, postData.description, postData.content,0, postData.date, postData.author, postData.category], (error, result) => {
             if (error) {
                 console.error(error.message);
                 res.status(500).send('Internal Server Error');
@@ -59,3 +75,4 @@ app.post('/api/upload', async (req, res) => {
 });
 
 app.listen(PORT, () => console.log("Server is running on port: " + PORT))
+module.exports = app;

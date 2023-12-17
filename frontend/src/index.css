@@ -2,3 +2,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 1;
+    display: block;
+    background-color: #FF5858;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.swal2-popup {
+    font-size: 1.6rem !important;
+    font-family: "LomoWebPixel LT Std 5";
+    background-color: #242424;
+    color: #FF5858;
+}
+
+.swal2-styled{
+    background-color: #FF5858 !important;
+}

@@ -1,9 +1,10 @@
 import React from 'react'
 
 function DashboardPage() {
-  return (
-    <div>DashboardPage</div>
-  )
+    return (
+      <div>
+      </div>
+    )
 }
 
 export default DashboardPage

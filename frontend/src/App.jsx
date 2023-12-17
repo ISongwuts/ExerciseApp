@@ -42,12 +42,13 @@ function App() {
       <RegisterModal isShowModal={isShowRegisterModal} closeModalHandler={onCloseModalHandler} loginModalHandler={showLoginModalHandler} registerModalHandler={showRegisterModalHandler}/>
       <Router>
         <Navbar themeModeHandler={themeModeHandler} loginModalHandler={showLoginModalHandler}/>
-        <div className="flex-grow overflow-auto ">
+        <div className=" h-full flex-grow overflow-auto ">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/content" element={<ContentPage />} />
             <Route path="/contact" element={<ContactPage />} />
-            <Route path="/content/article/:articleId" element={<ArticlePage />} />
+            <Route path="/content/article/:id" element={<ArticlePage />}/>
+            <Route path="*" element={<div className=" h-[70vh] items-center flex justify-center font-bold text-[3rem] font-body text-PrimaryColors"> Not Found or You do not have permission.</div>}/>
           </Routes>
         </div>
         <Footer />

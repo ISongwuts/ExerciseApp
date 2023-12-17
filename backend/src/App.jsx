@@ -4,6 +4,7 @@ import Footer from './components/Footer/Footer'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PostPage from './Pages/PostPage/PostPage';
 import DatabasePage from './Pages/DatabasePage/DatabasePage';
+import DashboardPage from './Pages/DashboardPage/DashboardPage';
 
 function App() {
   const [isThemeMode, setIsThemeMode] = useState("dark")
@@ -19,6 +20,7 @@ function App() {
           <Navbar themeModeHandler={themeModeHandler} />
           <div className="flex-grow overflow-auto ">
             <Routes>
+              <Route path='/' element={<DashboardPage />}/>
               <Route path='/post' element={<PostPage />}/>
               <Route path='/database' element={<DatabasePage />}/>
             </Routes>

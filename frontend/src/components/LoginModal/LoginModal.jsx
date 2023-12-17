@@ -29,10 +29,10 @@ function LoginModal(props) {
               </div>
             </form>
           </div>
-          <div class="relative flex items-center">
-            <div class="flex-grow border-t border-gray-400"></div>
-            <span class="flex-shrink mx-4 text-gray-400">or</span>
-            <div class="flex-grow border-t border-gray-400"></div>
+          <div className="relative flex items-center">
+            <div className="flex-grow border-t border-gray-400"></div>
+            <span className="flex-shrink mx-4 text-gray-400">or</span>
+            <div className="flex-grow border-t border-gray-400"></div>
           </div>
           <div className="flex justify-between items-center">
           <a href="#" className='font-bold' onClick={props.closeModalHandler}>close?</a>

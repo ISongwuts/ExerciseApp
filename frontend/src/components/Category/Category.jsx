@@ -15,11 +15,11 @@ function Category() {
             <ul className={`${props.isCategoryOpen ? 'flex' : 'hidden'} flex flex-row space-x-4 `}>
                 {categoryList.map((item, index) => {
                     return(
-                        <a className={`border-2 rounded-b-myConf hover:bg-PrimaryColors hover:text-PrimaryBG duration-200 ${activeCategory === item ? 'bg-PrimaryColors text-PrimaryBG border-PrimaryColors' : 'border-transparent'}`} 
+                        <a key={index} className={`border-2 rounded-b-myConf hover:bg-PrimaryColors hover:text-PrimaryBG duration-200 ${activeCategory === item ? 'bg-PrimaryColors text-PrimaryBG border-PrimaryColors' : 'border-transparent'}`} 
                             href="#"
                             onClick={()=>handleCategory(item)}
                         >
-                            <li className=' mx-3' id={index}>{item}</li></a>
+                            <li key={index} className=' mx-3'>{item}</li></a>
                     )
                 })}
             </ul>
@@ -43,11 +43,11 @@ function Category() {
             <ul className='flex flex-row space-x-4 justify-center max-lg:hidden'>
                 {categoryList.map((item, index) => {
                     return(
-                        <a className={`border-2 rounded-myConf hover:bg-PrimaryColors hover:text-PrimaryBG duration-200 ${activeCategory === item ? 'bg-PrimaryColors text-PrimaryBG border-PrimaryColors' : 'border-transparent'}`} 
+                        <a key={index} className={`border-2 rounded-myConf hover:bg-PrimaryColors hover:text-PrimaryBG duration-200 ${activeCategory === item ? 'bg-PrimaryColors text-PrimaryBG border-PrimaryColors' : 'border-transparent'}`} 
                             href="#"
                             onClick={()=>handleCategory(item)}
                         >
-                            <li className=' mx-10' id={index}>{item}</li></a>
+                            <li className=' mx-10' key={index}>{item}</li></a>
                     )
                 })}
             </ul>
