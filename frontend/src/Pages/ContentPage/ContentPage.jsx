@@ -16,7 +16,7 @@ function ContentPage() {
     const fetchData = () => {
       setLoading(true);
       setTimeout(() => {
-        fetch('http://localhost:3001/api/post')
+        fetch('https://exerciseapp-api.vercel.app/api/post')
           .then(response => response.json())
           .then(data => {
             setContentData(data);

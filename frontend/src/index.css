@@ -23,3 +23,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .swal2-styled{
     background-color: #FF5858 !important;
 }
+
+.prose :where(strong, h3, h2, h1, h4, span):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+    color: #FF5858 !important;
+    font-weight: bold;
+}
+
+.ql-clipboard, .ql-tooltip-editor{
+    display: none;
+}

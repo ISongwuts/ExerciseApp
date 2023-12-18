@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { TextInput, Textarea, DatePicker, Select, SelectItem } from "@tremor/react";
 import { IoMdCreate } from "react-icons/io";
 import { FaTrashAlt } from "react-icons/fa";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import Swal from 'sweetalert2'
 
 const CategorySelector = (props) => {
@@ -38,8 +40,8 @@ const PostForm = () => {
         handleInputChange({ target: { value } }, 'category');
     };
 
-    const setBase64ImageFile = (value) => {
-        handleInputChange({ target: { value } }, 'image');
+    const handleQuillChange = (content) => {
+        handleInputChange({ target: { value: content } }, 'content');
     };
 
     const formPattern = [
@@ -48,11 +50,9 @@ const PostForm = () => {
         { formTitle: "date", formComponent: <DatePicker className="max-w-sm w-fit" onValueChange={(date) => handleInputChange({ target: { value: date } }, 'date')} /> },
         { formTitle: "description", formComponent: <TextInput type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'description')} /> },
         {
-            formTitle: "content", formComponent: <Textarea
-                id="description"
-                placeholder="Start typing here..."
-                className="min-h-[20rem]"
-                onChange={(e) => handleInputChange(e, 'content')}
+            formTitle: "content", formComponent: <ReactQuill
+                theme="snow" 
+                onChange={handleQuillChange}
             />
         },
         { formTitle: "category", formComponent: <CategorySelector setCategoryValue={setCategoryValue} /> },
@@ -60,8 +60,9 @@ const PostForm = () => {
 
     const postFormHandler = async (event) => {
         event.preventDefault()
+        console.log(formData)
         try {
-            const response = await fetch('http://localhost:3001/api/upload', {
+            const response = await fetch('https://exerciseapp-api.vercel.app/api/upload', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -76,7 +77,7 @@ const PostForm = () => {
                     icon: 'success',
                     //timer: 3000,
                     confirmButtonText: 'OK',
-                  })
+                })
             } else {
                 console.log("fail to upload the post");
                 Swal.fire({
@@ -85,7 +86,7 @@ const PostForm = () => {
                     icon: 'error',
                     timer: 3000,
                     confirmButtonText: 'OK',
-                  })
+                })
             }
         } catch (error) {
             Swal.fire({
@@ -94,7 +95,7 @@ const PostForm = () => {
                 icon: 'error',
                 timer: 3000,
                 confirmButtonText: 'OK',
-              })
+            })
         }
     }
 
