@@ -43,7 +43,7 @@ function Category() {
             <ul className='flex flex-row space-x-4 justify-center max-lg:hidden'>
                 {categoryList.map((item, index) => {
                     return(
-                        <a key={index} className={`border-2 rounded-myConf hover:bg-PrimaryColors hover:text-PrimaryBG duration-200 ${activeCategory === item ? 'bg-PrimaryColors text-PrimaryBG border-PrimaryColors' : 'border-transparent'}`} 
+                        <a key={index} className={`border border-PrimaryColors rounded-myConf hover:bg-PrimaryColors hover:text-PrimaryBG duration-200 ${activeCategory === item ? 'bg-PrimaryColors text-PrimaryBG border-PrimaryColors' : ''}`} 
                             href="#"
                             onClick={()=>handleCategory(item)}
                         >

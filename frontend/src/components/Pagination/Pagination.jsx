@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Pagination({ currentPage, totalPages, onPageChange }) {
+const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const getPageNumbers = () => {
     const pageNumbers = [];
     for (let i = 1; i <= totalPages; i++) {

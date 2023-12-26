@@ -10,7 +10,6 @@ function ContentPage() {
   const [contentData, setContentData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = () => {

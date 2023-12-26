@@ -32,3 +32,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .ql-clipboard, .ql-tooltip-editor{
     display: none;
 }
+
+.swal2-confirm{
+    background-color: #00a96e !important;
+}

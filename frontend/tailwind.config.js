@@ -15,7 +15,8 @@ export default {
       'PrimaryBG': '#242424'
     },
     borderRadius: {
-      'myConf': '20px'
+      'myConf': '20px',
+      'myConf2': '10px'
     },
     width: {
       '128': '36rem',
@@ -42,5 +43,5 @@ export default {
     }
     
   },
-  plugins: [require('@tailwindcss/typography'),],
+  plugins: [require('@tailwindcss/typography'), require("daisyui")],
 }

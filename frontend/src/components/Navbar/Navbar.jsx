@@ -1,14 +1,36 @@
-import React, { useState } from 'react';
-import LoginModal from '../LoginModal/LoginModal';
+import React, { useEffect, useState } from 'react';
 import sunIcon from '../../assets/svg/icons/sun.svg';
 import moonIcon from '../../assets/svg/icons/moon.svg';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../../context/AuthProvider';
+import Cookies from 'js-cookie';
+import Tooltip from '@mui/material/Tooltip';
+
 
 function Navbar(props) {
     const [isSunIcon, setIsSunIcon] = useState(true);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const location = useLocation();
+    const { user, login } = useAuth();
+
+    useEffect(() => {
+        if (user) {
+            Cookies.set('userData', JSON.stringify(user));
+        }
+    }, [user]);
+
+    useEffect(() => {
+        // Check if there is user data stored in the cookie
+        const userDataFromCookie = Cookies.get('userData');
+
+        // If there is user data in the cookie and the user is not logged in,
+        // automatically log in the user using the stored data
+        if (userDataFromCookie && !user) {
+            const parsedUserData = JSON.parse(userDataFromCookie);
+            login(parsedUserData); // Assuming you have a login function in your useAuth context
+        }
+    }, [user, login]);
 
 
     const toggleIcon = () => {
@@ -91,14 +113,23 @@ function Navbar(props) {
                                 />
                             </a>
                         </li>
-                        <button
-                            className=" rounded-myConf py-2 px-4 text-3xl font-bold uppercase text-PrimaryBG bg-PrimaryColors border-2 border-PrimaryColors lg:inline-block hover:text-PrimaryColors hover:border-2 hover:bg-[transparent] duration-200"
-                            type="button"
-                            data-ripple-light="true"
-                            onClick={props.loginModalHandler}
-                        >
-                            <span>Login</span>
-                        </button>
+                        {user ? (
+                            <div className='flex space-x-6 font-bold items-center'>
+                                <Tooltip arrow title={user.user.username}>
+                                    <Link to={`/profile/${user.user.username}`}><div className=' text-InactivePrimary p-2 border-InactivePrimary border rounded-[50%] hover:text-PrimaryColors hover:border-PrimaryColors duration-150'>{user.user.username.slice(0,2)}</div></Link>
+                                </Tooltip>
+                            </div>
+                        ) : (
+                            <button
+                                className=" rounded-myConf py-2 px-4 text-3xl font-bold uppercase text-PrimaryBG bg-PrimaryColors border-2 border-PrimaryColors lg:inline-block hover:text-PrimaryColors hover:border-2 hover:bg-[transparent] duration-200"
+                                type="button"
+                                data-ripple-light="true"
+                                onClick={props.loginModalHandler}
+                            >
+                                <span>Login</span>
+                            </button>
+                        )}
+
                     </ul>
 
                 </div>
@@ -115,7 +146,7 @@ function Navbar(props) {
                     </button>
                 </div>
             </div>
-            <DropDownMenu isMenuOpen={isMobileMenuOpen} isHover={isHovered}/>
+            <DropDownMenu isMenuOpen={isMobileMenuOpen} isHover={isHovered} />
         </nav>
     );
 }
