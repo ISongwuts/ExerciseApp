@@ -12,6 +12,7 @@ function Navbar(props) {
     const [isHovered, setIsHovered] = useState(false);
     const location = useLocation();
 
+
     const toggleIcon = () => {
         setIsSunIcon(!isSunIcon);
     };
@@ -56,11 +57,11 @@ function Navbar(props) {
     }
 
     return (
-        <nav className="h-24 bg-[transparent] py-2 px-4 text-black shadow-md backdrop-blur-2xl  font-body border-b-1">
+        <nav className="h-24 bg-[transparent] text-black shadow-md backdrop-blur-2xl font-body border-b-1">
             <div className="container mx-auto flex items-center justify-between h-full">
                 <Link
                     to="/"
-                    className="mr-4 text-PrimaryColors block cursor-pointer py-1 text-5xl font-bold text-inherit antialiased items-center"
+                    className=" text-PrimaryColors cursor-pointer  text-3xl font-bold text-inherit antialiased items-center"
                 >
                     <span>Exercise</span>
                 </Link>
@@ -71,7 +72,7 @@ function Navbar(props) {
                         {NavbarItemsList.map((item, index) => (
                             <li
                                 key={index}
-                                className={`block p-1 text-3xl font-bold text-inherit antialiased ${location.pathname === item.path
+                                className={`block p-1 text-2xl font-bold text-inherit antialiased ${location.pathname === item.path
                                     ? 'text-PrimaryColors'
                                     : ''
                                     }`}
@@ -95,13 +96,14 @@ function Navbar(props) {
                                 />
                             </a>
                         </li>
-                        <button
-                            className=" rounded-myConf py-2 px-4 text-3xl font-bold uppercase text-PrimaryBG bg-PrimaryColors border-2 border-PrimaryColors lg:inline-block hover:text-PrimaryColors hover:border-2 hover:bg-[transparent] duration-200"
+                        <a
+                            className=" rounded-myConf py-1 px-4 text-2xl font-bold uppercase text-PrimaryBG bg-PrimaryColors border-2 border-PrimaryColors lg:inline-block hover:text-PrimaryColors hover:border-2 hover:bg-[transparent] duration-200"
                             type="button"
                             data-ripple-light="true"
+                            href='https://exercise-frontend-demo.netlify.app/'
                         >
                             <span>Back</span>
-                        </button>
+                        </a>
                     </ul>
 
                 </div>

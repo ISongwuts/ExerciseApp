@@ -131,6 +131,8 @@ app.post('/api/user/login', async (req, res) => {
                 id: user.id,
                 username: user.username,
                 email: user.email,
+                birth: user.birth,
+                role: user.role,
                 // Include other relevant user information
             }
         });

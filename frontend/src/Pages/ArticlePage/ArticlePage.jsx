@@ -5,12 +5,6 @@ import ReactQuill from 'react-quill';
 function ArticlePage() {
     const location = useLocation();
     const data = location.state;
-    var config = {
-        "theme": "snow",
-        "modules": {
-            "toolbar": false
-        }
-      };
     return (
         <div className="self-start h-[100%] w-[100%] flex justify-center p-10">
             <article className="prose lg:prose-xl font-body">

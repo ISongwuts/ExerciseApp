@@ -1,14 +1,13 @@
 import { useState } from 'react'
 import Navbar from './components/Navbar/Navbar'
 import Footer from './components/Footer/Footer'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import PostPage from './Pages/PostPage/PostPage';
 import DatabasePage from './Pages/DatabasePage/DatabasePage';
 import DashboardPage from './Pages/DashboardPage/DashboardPage';
 
 function App() {
   const [isThemeMode, setIsThemeMode] = useState("dark")
-
   const themeModeHandler = () => {
     setIsThemeMode(isThemeMode === "light" ? "dark" : "light")
     console.log(isThemeMode)
@@ -20,9 +19,9 @@ function App() {
           <Navbar themeModeHandler={themeModeHandler} />
           <div className="flex-grow overflow-auto ">
             <Routes>
-              <Route path='/' element={<DashboardPage />}/>
-              <Route path='/post' element={<PostPage />}/>
-              <Route path='/database' element={<DatabasePage />}/>
+              <Route path='/' element={<DashboardPage />} />
+              <Route path='/post' element={<PostPage />} />
+              <Route path='/database' element={<DatabasePage />} />
             </Routes>
           </div>
           <Footer />

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import Category from '../../components/Category/Category';
 import ContentCard from '../../components/Card/ContentCard';
-import { useNavigate } from 'react-router-dom';
 import Pagination from '../../components/Pagination/Pagination';
 import { IoReload } from "react-icons/io5";
 
-function ContentPage() {
+
+function ContentPage(props) {
   const itemsPerPage = 8;
   const [contentData, setContentData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const fetchData = () => {
@@ -56,6 +57,7 @@ function ContentPage() {
               <div className="grid CollapseCard-xl:grid-cols-4 max-CollapseCard-xl:grid-cols-3 max-CollapseCard-lg:grid-cols-2 max-CollapseCard-tiny:grid-cols-1 gap-8 justify-items-center">
                 {displayedData.map((attr, index) => (
                   <ContentCard
+                    showLoginModalHandler={props.loginModalHandler}
                     key={index}
                     articleId={attr.post_id}
                     type={attr.category_id}

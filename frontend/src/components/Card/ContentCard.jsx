@@ -6,10 +6,14 @@ import backImg from '../../assets/icon/back.ico';
 import abdominalImg from '../../assets/icon/abdominal.ico';
 import chestImg from '../../assets/icon/chest.ico';
 import bottomImg from '../../assets/icon/bottom.ico';
+import { useAuth } from '../../context/AuthProvider';
+import Swal from 'sweetalert2';
 
 function ContentCard(props) {
   const [isHovered, setIsHovered] = useState(false);
+  const { user } = useAuth();
   const imgResource = [chestImg, abdominalImg, armImg, legImg, bottomImg, backImg];
+  
   const myState = {
     type: props.type,
     title: props.title,
@@ -18,13 +22,29 @@ function ContentCard(props) {
     article: props.article,
     date: props.date
   };
+
+  const isNotUserHandler = () => {
+    Swal.fire(
+      {
+        title: "Permission not allow.",
+        text: "Only user allow to view the content, Please Login.",
+        icon: "error",
+        confirmButtonText: "Log In",
+        showCancelButton: true,
+        cancelButtonText: "Cancel",
+      }
+    ).then((res) => {
+      if(res.isConfirmed) props.showLoginModalHandler();
+    })
+  }
   return (
 
     <Link
       className={`border-2 border-InactivePrimary rounded-[23px] hover:shadow-md hover:shadow-InactivePrimary duration-200`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      to={`/content/article/${props.articleId + "_" + props.title + "_@" + props.author}`}
+      to={user ? `/content/article/${props.articleId + "_" + props.title + "_@" + props.author}` : ''}
+      onClick={user ? null : isNotUserHandler}
       state={myState}
     >
       <div className="xl:w-[25rem] max-CollapseCard-sm:w-[15rem] xl:h-[15rem] max-CollapseCard-sm:h-[10rem] font-body">

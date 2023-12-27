@@ -48,6 +48,7 @@ function Navbar(props) {
         { path: '/content', label: 'Content' },
         { path: '/contact', label: 'Contact' },
     ];
+    if(user) user.user.role === "admin" ? NavbarItemsList.push({ path: 'https://exercise-backend-demo.netlify.app/', label: 'Dashboard' }) : null 
 
     const DropDownMenu = (props) => {
         return (
@@ -65,6 +66,7 @@ function Navbar(props) {
                         <Link
                             to={item.path}
                             className="flex items-center hover:text-PrimaryColors focus:text-PrimaryColors"
+                            state={item.label === "Dashboard" ? {permission : 1} : null}
                         >
                             {item.label}
                         </Link>
@@ -79,7 +81,7 @@ function Navbar(props) {
             <div className="container mx-auto flex items-center justify-between h-full">
                 <Link
                     to="/"
-                    className="mr-4 text-PrimaryColors block cursor-pointer py-1 text-5xl font-bold text-inherit antialiased items-center"
+                    className="mr-4 text-PrimaryColors block cursor-pointer py-1 text-3xl font-bold text-inherit antialiased items-center"
                 >
                     <span>Exercise</span>
                 </Link>
@@ -90,7 +92,7 @@ function Navbar(props) {
                         {NavbarItemsList.map((item, index) => (
                             <li
                                 key={index}
-                                className={`block p-1 text-3xl font-bold text-inherit antialiased ${location.pathname === item.path
+                                className={`block p-1 text-2xl font-bold text-inherit antialiased ${location.pathname === item.path
                                     ? 'text-PrimaryColors'
                                     : ''
                                     }`}
@@ -98,6 +100,7 @@ function Navbar(props) {
                                 <Link
                                     to={item.path}
                                     className="flex items-center hover:text-PrimaryColors focus:text-PrimaryColors"
+                                    state={item.label === "Dashboard" ? {permission : 1} : null}
                                 >
                                     {item.label}
                                 </Link>
@@ -116,12 +119,20 @@ function Navbar(props) {
                         {user ? (
                             <div className='flex space-x-6 font-bold items-center'>
                                 <Tooltip arrow title={user.user.username}>
-                                    <Link to={`/profile/${user.user.username}`}><div className=' text-InactivePrimary p-2 border-InactivePrimary border rounded-[50%] hover:text-PrimaryColors hover:border-PrimaryColors duration-150'>{user.user.username.slice(0,2)}</div></Link>
+                                    <Link
+                                        to={`/profile/${user.user.username}`}
+                                        state={{
+                                            username: user.user.username,
+                                            email: user.user.email,
+                                            birth: user.user.birth,
+                                            role: user.user.role
+                                        }}
+                                    ><div className=' text-InactivePrimary p-2 border-InactivePrimary border rounded-[50%] hover:text-PrimaryColors hover:border-PrimaryColors duration-150'>{user.user.username.slice(0, 2)}</div></Link>
                                 </Tooltip>
                             </div>
                         ) : (
                             <button
-                                className=" rounded-myConf py-2 px-4 text-3xl font-bold uppercase text-PrimaryBG bg-PrimaryColors border-2 border-PrimaryColors lg:inline-block hover:text-PrimaryColors hover:border-2 hover:bg-[transparent] duration-200"
+                                className=" rounded-myConf py-1 px-4 text-2xl font-bold uppercase text-PrimaryBG bg-PrimaryColors border-2 border-PrimaryColors lg:inline-block hover:text-PrimaryColors hover:border-2 hover:bg-[transparent] duration-200"
                                 type="button"
                                 data-ripple-light="true"
                                 onClick={props.loginModalHandler}

@@ -49,7 +49,7 @@ function App() {
           <div className=" h-full flex-grow overflow-auto ">
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/content" element={<ContentPage />} />
+              <Route path="/content" element={<ContentPage loginModalHandler={showLoginModalHandler}/>} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/content/article/:id" element={<ArticlePage />} />
               <Route path="/profile/:id" element={<ProfilePage />}/>
