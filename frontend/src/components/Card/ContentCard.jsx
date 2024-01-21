@@ -9,6 +9,7 @@ import bottomImg from '../../assets/icon/bottom.ico';
 import { useAuth } from '../../context/AuthProvider';
 import Swal from 'sweetalert2';
 
+
 function ContentCard(props) {
   const [isHovered, setIsHovered] = useState(false);
   const { user } = useAuth();
@@ -40,7 +41,6 @@ function ContentCard(props) {
   return (
 
     <Link
-      className={`border-2 border-InactivePrimary rounded-[23px] hover:shadow-md hover:shadow-InactivePrimary duration-200`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       to={user ? `/content/article/${props.articleId + "_" + props.title + "_@" + props.author}` : ''}

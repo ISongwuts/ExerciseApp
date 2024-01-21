@@ -3,6 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    overflow-x: hidden;
+}
+
 input[type="date"]::-webkit-calendar-picker-indicator {
     opacity: 1;
     display: block;
@@ -20,19 +24,54 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     color: #FF5858;
 }
 
-.swal2-styled{
+.swal2-styled {
     background-color: #FF5858 !important;
 }
 
-.prose :where(strong, h3, h2, h1, h4, span):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+.prose :where(strong, h3, h2, h1, h4, span):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     color: #FF5858 !important;
     font-weight: bold;
 }
 
-.ql-clipboard, .ql-tooltip-editor{
+.ql-clipboard,
+.ql-tooltip-editor {
     display: none;
 }
 
-.swal2-confirm{
+.swal2-confirm {
     background-color: #00a96e !important;
+}
+.MuiDivider-root{
+    border: 0.1px solid #602929 !important;
+
+}
+.tremor-Tab-root:focus{
+    color: #FF5858 !important;
+    border-bottom: 2px solid #FF5858 !important;
+}
+
+.tremor-Tab-root:hover{
+    color: #FF5858 !important;
+    border-bottom: 2px solid #FF5858 !important;
+}
+.tremor-Tab-root::after{
+    color: #FF5858 !important;
+    border-bottom: 2px solid #FF5858 !important;
+}
+
+.quill{
+    border-radius: 20px !important;
+}
+
+.ql-container{
+    @apply min-h-[20rem];
+    @apply bg-[#eeeeee];
+}
+
+.ql-editor p{
+    @apply text-PrimaryColors;
+}
+
+.ql-toolbar{
+    @apply bg-PrimaryColors;
 }

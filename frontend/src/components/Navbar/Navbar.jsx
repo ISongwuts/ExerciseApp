@@ -6,7 +6,6 @@ import { useAuth } from '../../context/AuthProvider';
 import Cookies from 'js-cookie';
 import Tooltip from '@mui/material/Tooltip';
 
-
 function Navbar(props) {
     const [isSunIcon, setIsSunIcon] = useState(true);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -21,14 +20,10 @@ function Navbar(props) {
     }, [user]);
 
     useEffect(() => {
-        // Check if there is user data stored in the cookie
         const userDataFromCookie = Cookies.get('userData');
-
-        // If there is user data in the cookie and the user is not logged in,
-        // automatically log in the user using the stored data
         if (userDataFromCookie && !user) {
             const parsedUserData = JSON.parse(userDataFromCookie);
-            login(parsedUserData); // Assuming you have a login function in your useAuth context
+            login(parsedUserData);
         }
     }, [user, login]);
 
@@ -46,9 +41,9 @@ function Navbar(props) {
     const NavbarItemsList = [
         { path: '/', label: 'Home' },
         { path: '/content', label: 'Content' },
-        { path: '/contact', label: 'Contact' },
+        { path: '/contact', label: 'Contact' }
     ];
-    if(user) user.user.role === "admin" ? NavbarItemsList.push({ path: 'https://exercise-backend-demo.netlify.app/', label: 'Dashboard' }) : null 
+    if (user) user.user.role === "admin" ? NavbarItemsList.push({ path: '/dashboard', label: 'Dashboard' }) : null
 
     const DropDownMenu = (props) => {
         return (
@@ -66,7 +61,7 @@ function Navbar(props) {
                         <Link
                             to={item.path}
                             className="flex items-center hover:text-PrimaryColors focus:text-PrimaryColors"
-                            state={item.label === "Dashboard" ? {permission : 1} : null}
+                            state={item.label === "Dashboard" ? { permission: 1 } : null}
                         >
                             {item.label}
                         </Link>
@@ -100,7 +95,6 @@ function Navbar(props) {
                                 <Link
                                     to={item.path}
                                     className="flex items-center hover:text-PrimaryColors focus:text-PrimaryColors"
-                                    state={item.label === "Dashboard" ? {permission : 1} : null}
                                 >
                                     {item.label}
                                 </Link>

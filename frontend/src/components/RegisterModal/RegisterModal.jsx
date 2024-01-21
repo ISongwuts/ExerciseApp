@@ -75,8 +75,6 @@ const RegisterForm = () => {
       confirmButtonText: 'OK',
     });
   }
-
-  
   useEffect(() => {
     // This effect runs whenever registerData.password changes
     console.log(registerData.password);
@@ -94,15 +92,15 @@ const RegisterForm = () => {
     <div>
       <form action="" className='flex flex-col space-y-1'>
         <label htmlFor="" className='font-bold'>Username</label>
-        <input name='username' onChange={handleChange} type="text" className=" placeholder-InactivePrimary border border-PrimaryColors p-2 text-PrimaryColors bg-[transparent] rounded-r-myConf" placeholder='enter username here.' />
+        <input name='username' onChange={handleChange} type="text" className={`placeholder-InactivePrimary border p-2 border-PrimaryColors  text-PrimaryColors bg-[transparent] rounded-r-myConf`} placeholder='enter username here.' />
         <label htmlFor="" className='font-bold'>email</label>
-        <input name='email' onChange={handleChange} type="email" className=" placeholder-InactivePrimary border border-PrimaryColors p-2 text-PrimaryColors bg-[transparent] rounded-r-myConf" placeholder='Example@mail.com' />
+        <input disabled={registerData.username ? false:true} name='email' onChange={handleChange} type="email" className={`placeholder-InactivePrimary border  ${registerData.username ? 'border-PrimaryColors  text-PrimaryColors':'border-[#303030] text-[#303030] cursor-not-allowed'} p-2 bg-[transparent] rounded-r-myConf`} placeholder='Example@mail.com' />
         <label htmlFor="" className='font-bold'>password</label>
-        <Tooltip arrow title="password must greater than 8 character and atleast 1 uppercase."><input name='password' onChange={handleChange} type="password" className=" placeholder-InactivePrimary border border-PrimaryColors p-2 text-PrimaryColors bg-[transparent] rounded-r-myConf" placeholder='enter password here.' /></Tooltip>
+        <Tooltip arrow title="password must greater than 8 character and atleast 1 uppercase."><input disabled={registerData.email ? false:true} name='password' onChange={handleChange} type="password" className={`placeholder-InactivePrimary border ${registerData.email ? 'border-PrimaryColors  text-PrimaryColors':'border-[#303030] text-[#303030] cursor-not-allowed'} p-2 bg-[transparent] rounded-r-myConf`} placeholder='enter password here.' /></Tooltip>
         <label htmlFor="" className='font-bold'>confIrm password</label>
-        <input name='confirmPassword' onChange={handleChange} type="password" className=" placeholder-InactivePrimary border border-PrimaryColors p-2 text-PrimaryColors bg-[transparent] rounded-r-myConf" placeholder='enter password here.' />
+        <input disabled={registerData.password ? false:true} name='confirmPassword' onChange={handleChange} type="password" className={`placeholder-InactivePrimary border ${registerData.password ? 'border-PrimaryColors  text-PrimaryColors':'border-[#303030] text-[#303030] cursor-not-allowed'} p-2 bg-[transparent] rounded-r-myConf`} placeholder='enter password here.' />
         <label htmlFor="" className='font-bold'>Birth</label>
-        <input name='birth' onChange={handleChange} type="date" className=" placeholder-InactivePrimary border border-PrimaryColors p-2 text-PrimaryColors bg-[transparent] rounded-r-myConf" placeholder='enter password here.' />
+        <input disabled={registerData.confirmPassword ? false:true} name='birth' onChange={handleChange} type="date" className={`placeholder-InactivePrimary border p-2 ${registerData.confirmPassword ? 'border-PrimaryColors  text-PrimaryColors':'border-[#303030] cursor-not-allowed'} bg-[transparent] rounded-r-myConf`} placeholder='enter password here.' />
         <div className='pt-5 flex items-center justify-between'>
           <button onClick={onRegisterSubmit} type='submit' className='p-1 bg-PrimaryColors text-PrimaryBG text-xl font-bold rounded-r-myConf border-2 border-PrimaryColors w-[35%] hover:text-PrimaryColors hover:border-2 hover:bg-[transparent]'>register</button>
           <a href="">forgot password?</a>
