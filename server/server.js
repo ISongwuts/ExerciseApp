@@ -35,6 +35,45 @@ app.get('/api/post', async (req, res) => {
     }
 });
 
+app.get('/api/post/page=:id', async (req, res) => {
+    try {
+        const page = parseInt(req.params.id, 10);
+        const pageSize = 10;
+        const offset = (page - 1) * pageSize;
+        const result = await new Promise((resolve, reject) => {
+            db.query("SELECT * FROM post LIMIT ? OFFSET ?", [pageSize, offset], (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            });
+        });
+
+        res.send(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+app.get('/api/post/category=:id', async (req, res) => {
+    const categoryId = req.params.id;
+  
+    try {
+      const result = await new Promise((resolve, reject) => {
+        db.query("SELECT * FROM post WHERE category_id = ?", [categoryId], (err, result) => {
+          if (err) reject(err);
+          else resolve(result);
+        });
+      });
+  
+      res.send(result);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send('Internal Server Error');
+    }
+  });
+  
+
 app.get('/api/category', async (req, res) => {
     try {
         const result = await new Promise((resolve, reject) => {
