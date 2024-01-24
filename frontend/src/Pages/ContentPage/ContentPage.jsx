@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Category from '../../components/Category/Category';
 import ContentCard from '../../components/Card/ContentCard';
 import Pagination from '../../components/Pagination/Pagination';
@@ -19,9 +19,16 @@ function ContentPage(props) {
   const [rowCount, setRowCount] = useState(0);
 
   const onCategoryChange = (category_id) => {
-    const categoryList = ["All", "Chest", "Abdominal", "Arm", "Leg", "Bottom"]
-    setCategory(categoryList.indexOf(category_id));
-    setCurrentPage(1);
+    const categoryList = ["All", "Chest", "Abdominal", "Arm", "Leg", "Bottom"];
+    const categoryIndex = categoryList.findIndex(category => category.toLowerCase() === category_id.toLowerCase());
+    const paddedCategoryId = String(categoryIndex).padStart(3, '0');
+    const formattedCategoryId = `category-${paddedCategoryId}`;
+    if (categoryIndex !== -1) {
+      setCategory(formattedCategoryId);
+      setCurrentPage(1);
+    } else {
+      console.error(`Category "${formattedCategoryId}" not found in the list`);
+    }
   }
 
   const flexibleSearchHandler = (event) => {
@@ -39,45 +46,45 @@ function ContentPage(props) {
     setContentNotFound(term && filteredData.length === 0);
   }
 
+  const fetchData = useCallback(async (category, page) => {
+    try {
+      let apiUrl = `http://localhost:3001/api/post/`;
+
+      if (category === null || category === 'category-000') {
+        apiUrl += `page=${page}`;
+        const contentResponse = await fetch(apiUrl);
+        const contentJson = await contentResponse.json();
+        setContentData(contentJson);
+        const rowResponse = await fetch('http://localhost:3001/api/post/rowcount');
+        const rowJson = await rowResponse.json();
+        setRowCount(rowJson.rowCount);
+        console.log(rowCount);
+      } else {
+        apiUrl += `category=${category}`;
+        const contentResponse = await fetch(apiUrl);
+        const contentJson = await contentResponse.json();
+        setContentData(contentJson);
+        setRowCount(contentJson.length);
+      }
+      console.log(apiUrl);
+      setLoading(false);
+      setAlreadyLoaded(true);
+    } catch (error) {
+      console.error('Error fetching post data:', error);
+      setLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
-    const fetchData = (category, page) => {
-      console.log(page);
-      setLoading(true);
-      setTimeout(() => {
-        let apiUrl = 'http://localhost:3001/api/post/';
-        if (category === null || category === 0) {
-          apiUrl += `page=${page}`;
-        } else {
-          apiUrl += `category=${category}`;
-        }
-        console.log(apiUrl);
-        fetch(apiUrl)
-          .then(response => response.json())
-          .then(data => {
-            setContentData(data);
-          })
-          .catch(error => {
-            console.error('Error fetching post data:', error);
-            setLoading(false);
-          });
+    setAlreadyLoaded(false);
+  }, [category]);
 
-          fetch('http://localhost:3001/api/rowcount')
-          .then(response => response.json())
-          .then(data => {
-            setRowCount(data.rowCount);
-            console.log(rowCount);
-            console.log(contentData);
-            setLoading(false);
-            setAlreadyLoaded(true);
-          })
-          .catch(error => {
-            console.error('Error fetching post data:', error);
-            setLoading(false);
-          });
-      }, 2000);
-    };
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      fetchData(category, currentPage);
+    }, 1000);
 
-    fetchData(category, currentPage);
 
     // Use setInterval if you want to periodically fetch data
     const intervalId = setInterval(() => fetchData(category, currentPage), 600000); // Fetch data every 60 seconds

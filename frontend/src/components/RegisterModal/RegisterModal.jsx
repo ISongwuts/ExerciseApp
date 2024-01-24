@@ -113,8 +113,8 @@ const RegisterForm = () => {
 function RegisterModal(props) {
   return (
     <div className={`${props.isShowModal ? '' : 'hidden'} backdrop-blur-sm fixed z-[1] bg-PrimaryBG/[.50] inset-0 h-[100%] flex justify-center items-center`}>
-      <div className=" p-4 w-full max-h-full flex flex-row">
-        <div className="p-10 flex flex-col justify-between bg-PrimaryColors border-2 border-PrimaryColors shadow text-PrimaryBG rounded-l-myConf font-body space-y-5 w-[50%]">
+      <div className=" p-4 w-1/2 max-h-full flex flex-row">
+        <div className="p-10 flex flex-col justify-evenly bg-PrimaryColors border-2 border-PrimaryColors shadow text-PrimaryBG rounded-l-myConf font-body space-y-5 w-[50%]">
           <div className=' h-auto text-center'>
             <span className='text-[3rem] font-bold'>exercise</span>
           </div>

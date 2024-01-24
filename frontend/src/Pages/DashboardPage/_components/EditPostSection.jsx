@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 
 const CategorySelector = (props) => {
     const categories = ["chest", "abdominal", "arm", "leg", "bottom", "shoulder"];
-    const [value, setValue] = useState("");
+    const [value, setValue] = useState(props.value || "");
 
     const handleCategoryChange = (selectedValue) => {
         setValue(selectedValue);
@@ -26,7 +26,7 @@ const CategorySelector = (props) => {
     );
 };
 
-const PostForm = () => {
+const PostForm = ({ post_id,  post_title, post_desc, post_article, post_date, post_feedback, post_author, category_id }) => {
     const [uploading, setUploading] = useState(false);
     const [formData, setFormData] = useState({
         id: '',
@@ -48,31 +48,13 @@ const PostForm = () => {
     };
 
     const formPattern = [
-        { formTitle: "title", formComponent: <TextInput type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'title')} /> },
-        { formTitle: "author", formComponent: <TextInput type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'author')} /> },
-        { formTitle: "date", formComponent: <DatePicker className="" onValueChange={(date) => handleInputChange({ target: { value: date } }, 'date')} /> },
-        { formTitle: "description", formComponent: <TextInput type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'description')} /> },
-        { formTitle: "content", formComponent: <ReactQuill theme="snow" onChange={handleQuillChange} /> },
-        { formTitle: "category", formComponent: <CategorySelector setCategoryValue={setCategoryValue} /> },
+        { formTitle: "title", formComponent: <TextInput value={post_title} type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'title')} /> },
+        { formTitle: "author", formComponent: <TextInput value={post_author} type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'author')} /> },
+        { formTitle: "date", formComponent: <DatePicker  className="" onValueChange={(date) => handleInputChange({ target: { value: date } }, 'date')} /> },
+        { formTitle: "description", formComponent: <TextInput value={post_desc} type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'description')} /> },
+        { formTitle: "content", formComponent: <ReactQuill value={post_article} theme="snow" onChange={handleQuillChange} /> },
+        { formTitle: "category", formComponent: <CategorySelector value={category_id} setCategoryValue={setCategoryValue} /> },
     ];
-
-    useEffect(() => {
-        const getLatestPostID = async () => {
-            try {
-                const response = await fetch('http://localhost:3001/api/post/latestPostID');
-                const data = await response.json();
-                const numericPart = parseInt(data.latestPostID.split('-')[1], 10);
-                const nextNumericPart = numericPart + 1;
-                console.log(numericPart)
-                const nextPostID = `post-${nextNumericPart.toString().padStart(4, '0')}`;
-                setFormData({ ...formData, ["id"]: nextPostID });
-            } catch (error) {
-                console.log(error.message);
-                setFormData({ ...formData, ["id"]: "post_001" });
-            }
-        }
-        getLatestPostID();
-    }, [uploading]);
 
     useEffect(() => {
         console.log(formData);
@@ -142,7 +124,7 @@ const PostForm = () => {
     };
 
     return (
-        <div className='font-body w-[50%] text-PrimaryColors'>
+        <div className='font-body w-[100%] text-PrimaryColors'>
             <form className='flex gap-4 flex-col' onSubmit={postFormHandler}>
                 {formPattern.map((item, index) => (
                     <div key={index} className='flex flex-col'>
@@ -164,15 +146,15 @@ const PostForm = () => {
     );
 };
 
-function Upload() {
+function EditPostSection({ post_id,  post_title, post_desc, post_article, post_date, post_feedback, post_author, category_id }) {
     return (
-        <div className='w-[100%] flex flex-col items-center mt-4 px-16'>
+        <div className=' font-body w-[100%] flex flex-col items-center'>
             <div className=' text-4xl p-3 flex'>
-                <span >Upload</span>
+                <span >Update: {post_id}</span>
             </div>
-            <PostForm />
+            <PostForm {...{ post_id,  post_title, post_desc, post_article, post_date, post_feedback, post_author, category_id }}/>
         </div>
     );
 }
 
-export default Upload;
+export default EditPostSection;

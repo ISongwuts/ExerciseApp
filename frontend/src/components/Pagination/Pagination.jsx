@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+  const [pageController, setPageController] = useState(1);
   const getPageNumbers = () => {
     const pageNumbers = [];
     for (let i = 1; i <= totalPages; i++) {
@@ -14,40 +15,40 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       onPageChange(newPage);
+      setPageController(newPage);
     }
   };
 
   return (
     <div className="flex justify-center my-14 mx-auto">
       <div className="text-lg w-[100%]">
-        <ul className="flex flex-row space-x-4">
-          <button
+        {totalPages !== 0 && <ul className="flex flex-row space-x-4">
+          {pageController !== 1 && <button
             className="bg-PrimaryColors text-PrimaryBG border border-PrimaryColors p-1 px-3 duration-200 hover:bg-[transparent] hover:border-PrimaryColors hover:text-PrimaryColors"
             onClick={() => handlePageChange(currentPage - 1)}
           >
             Previous
-          </button>
+          </button>}
           {pageNumbers.map((pageNumber, index) => (
             <button
               key={index}
-              className={`${
-                currentPage === pageNumber
+              className={`${currentPage === pageNumber
                   ? 'bg-[transparent] text-PrimaryColors '
                   : 'bg-PrimaryColors text-PrimaryBG border-PrimaryColors hover:bg-[transparent] hover:border-PrimaryColors hover:text-PrimaryColors'
-              } p-1 px-3 duration-200 border`}
+                } p-1 px-3 duration-200 border`}
               onClick={() => handlePageChange(pageNumber)}
             >
               {pageNumber}
             </button>
           ))}
 
-          <button
+          {pageController !== totalPages && <button
             className="bg-PrimaryColors text-PrimaryBG border border-PrimaryColors p-1 px-3 duration-200 hover:bg-[transparent] hover:border-PrimaryColors hover:text-PrimaryColors"
             onClick={() => handlePageChange(currentPage + 1)}
           >
             Next
-          </button>
-        </ul>
+          </button>}
+        </ul>}
       </div>
     </div>
   );

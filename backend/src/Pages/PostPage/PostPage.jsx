@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TextInput, Textarea, DatePicker, Select, SelectItem } from "@tremor/react";
+import { TextInput, DatePicker, Select, SelectItem } from "@tremor/react";
 import { IoMdCreate } from "react-icons/io";
 import { FaTrashAlt } from "react-icons/fa";
 import ReactQuill from 'react-quill';

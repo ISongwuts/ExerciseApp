@@ -19,6 +19,57 @@ const db = mysql.createConnection({
     port: process.env.port
 });
 
+app.get('/api/user', async (req, res) => {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            db.query("SELECT user_id, username, email, birth, role FROM user", (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            });
+        });
+        res.send(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+app.get('/api/post/rowcount', async (req, res) => {
+    const { query: { category, value } } = req;
+    console.log(req.query);
+    try {
+        if (!category && !value) {
+            const result = await new Promise((resolve, reject) => {
+                db.query('SELECT COUNT(*) AS row_count FROM post', (err, result) => {
+                    if (err) reject(err);
+                    else resolve(result);
+                });
+            });
+            const rowCount = result[0].row_count;
+            return res.send({ rowCount });
+        }
+
+        if (category && value) {
+            const result = await new Promise((resolve, reject) => {
+                const query = `SELECT COUNT(*) AS row_count FROM post WHERE category_id = ${value}`;
+                const values = [category, value];
+                db.query(query, values, (err, result) => {
+                    if (err) reject(err);
+                    else resolve(result);
+                });
+            });
+
+            const rowCount = result[0].row_count;
+            return res.send({ rowCount });
+        }
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 
 app.get('/api/post', async (req, res) => {
     try {
@@ -35,10 +86,25 @@ app.get('/api/post', async (req, res) => {
     }
 });
 
+app.get('/api/post/latestPostID', async (req, res) => {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            db.query("SELECT post_id FROM post ORDER BY CAST(SUBSTRING(post_id, 6) AS UNSIGNED) DESC LIMIT 1", (err, result) => {
+                if (err) reject(err);
+                else resolve(result[0] ? result[0].post_id : null);
+            });
+        });
+        res.send({ latestPostID: result });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 app.get('/api/post/page=:id', async (req, res) => {
     try {
         const page = parseInt(req.params.id, 10);
-        const pageSize = 10;
+        const pageSize = 8;
         const offset = (page - 1) * pageSize;
         const result = await new Promise((resolve, reject) => {
             db.query("SELECT * FROM post LIMIT ? OFFSET ?", [pageSize, offset], (err, result) => {
@@ -57,22 +123,22 @@ app.get('/api/post/page=:id', async (req, res) => {
 
 app.get('/api/post/category=:id', async (req, res) => {
     const categoryId = req.params.id;
-  
+
     try {
-      const result = await new Promise((resolve, reject) => {
-        db.query("SELECT * FROM post WHERE category_id = ?", [categoryId], (err, result) => {
-          if (err) reject(err);
-          else resolve(result);
+        const result = await new Promise((resolve, reject) => {
+            db.query("SELECT * FROM post WHERE category_id = ?", [categoryId], (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            });
         });
-      });
-  
-      res.send(result);
+
+        res.send(result);
     } catch (error) {
-      console.error(error.message);
-      res.status(500).send('Internal Server Error');
+        console.error(error.message);
+        res.status(500).send('Internal Server Error');
     }
-  });
-  
+});
+
 
 app.get('/api/category', async (req, res) => {
     try {
@@ -96,10 +162,10 @@ app.post('/api/upload', async (req, res) => {
 
     try {
         const postData = req.body; // Extract data from the request body
-        const insertQuery = 'INSERT INTO post (post_title, post_desc, post_article, post_feedback, post_date, post_author, category_id) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        const insertQuery = 'INSERT INTO post (post_id, post_title, post_desc, post_article, post_feedback, post_date, post_author, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
 
         // Execute the SQL query with the extracted data
-        db.query(insertQuery, [postData.title, postData.description, postData.content,0, postData.date, postData.author, postData.category], (error, result) => {
+        db.query(insertQuery, [postData.id, postData.title, postData.description, postData.content, 0, postData.date, postData.author, postData.category], (error, result) => {
             if (error) {
                 console.error(error.message);
                 res.status(500).send('Internal Server Error');

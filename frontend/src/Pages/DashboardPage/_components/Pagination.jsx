@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+const Paginations = ({ currentPage, totalPages, onPageChange }) => {
     const getPageNumbers = () => {
       const pageNumbers = [];
       for (let i = 1; i <= totalPages; i++) {
@@ -52,4 +52,4 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       </div>
     );
   }
-export default Pagination;
+export default Paginations;
