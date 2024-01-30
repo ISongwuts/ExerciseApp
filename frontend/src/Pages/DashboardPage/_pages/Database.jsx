@@ -7,18 +7,60 @@ import UserTable from '../_components/UserTable';
 import PostTable from '../_components/PostTable';
 import CategoryTable from '../_components/CategoryTable';
 import EditPostSection from '../_components/EditPostSection'
+import Swal from 'sweetalert2';
+import axios from 'axios';
+
 
 const Database = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [rowData, setRowData] = useState(null);
-    const [loading, setIsLoading] = useState(false); 
-    const onEditHandler = async (e, rowDatas) => {
+    const [loading, setIsLoading] = useState(false);
+    const [deleting, setDeleting] = useState(false);
+
+    const onEditHandler = (e, rowDatas) => {
         setIsLoading(true);
         setIsOpen(true);
         setRowData(rowDatas);
     }
 
-    useEffect(()=>{
+    const deleteHandler = async (type, id) => {
+        try {
+            setDeleting(true);
+            const result = await axios.delete(`http://localhost:3001/api/${type}/delete/${id}`);
+            Swal.fire('Deleted!', `Good luck if you don't mean to do this.`, 'success');
+            console.log(`${type} deleted successfully:`, result.data);
+            setDeleting(false);
+        } catch (error) {
+            console.error(`Error deleting ${type}:`, error.message);
+            // Handle error scenarios
+        }
+    };
+
+    const onDeleteHandler = (e, rowData) => {
+        const keys = Object.keys(rowData);
+        if (keys.includes('post_id') || keys.includes('user_id')) {
+            const type = keys.includes('post_id') ? 'post' : 'user';
+            const id = rowData[type + '_id'];
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Delete!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteHandler(type, id);
+                }
+            });
+        } else {
+            console.log('Unknown type:', rowData);
+        }
+    };
+
+
+    useEffect(() => {
         setIsLoading(false);
         console.log(rowData);
     }, [rowData])
@@ -26,10 +68,10 @@ const Database = () => {
     const modifierButtons = [
         { name: 'Add', icon: <FaPlus />, color: 'bg-[#00a96e] border-[#00a96e] hover:border-[#00a96e] hover:text-[#00a96e]', behavior: () => { } },
         { name: 'Edit', icon: <MdEdit />, color: 'bg-[#ffcc3d] border-[#ffcc3d] hover:border-[#ffcc3d] hover:text-[#ffcc3d]', behavior: onEditHandler },
-        { name: 'Delete', icon: <MdDelete />, color: 'bg-PrimaryColors border-PrimaryColors hover: border-PrimaryColors hover:text-PrimaryColors', behavior: () => { } },
+        { name: 'Delete', icon: <MdDelete />, color: 'bg-PrimaryColors border-PrimaryColors hover: border-PrimaryColors hover:text-PrimaryColors', behavior: onDeleteHandler },
     ];
 
-    const tabPanels = [<PostTable modifier={modifierButtons} />, <UserTable modifier={modifierButtons} />, <CategoryTable modifier={modifierButtons} />]
+    const tabPanels = [<PostTable isDeleting={deleting} modifier={modifierButtons} />, <UserTable isDeleting={deleting} modifier={modifierButtons} />, <CategoryTable isDeleting={deleting} modifier={modifierButtons} />]
 
     return (
         <div className='font-body text-PrimaryColors flex w-[100%] m-10 flex-col'>
@@ -62,7 +104,7 @@ const Database = () => {
                 </TabGroup>
                 <Dialog open={isOpen} onClose={(val) => setIsOpen(val)} static={true}>
                     <DialogPanel>
-                        { rowData &&  <EditPostSection {...rowData}/>}
+                        {rowData && <EditPostSection {...rowData} />}
                     </DialogPanel>
                 </Dialog>
             </div>

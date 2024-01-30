@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import TableComponent from "./DatabaseTable";
 
-const CategoryTable = ({ modifier }) => {
+const CategoryTable = ({ modifier }, props) => {
     const [category, setCategory] = useState([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
@@ -16,6 +16,9 @@ const CategoryTable = ({ modifier }) => {
 
     }, []);
 
+    useEffect(() => {
+        setLoading(props.isDeleting);
+    }, [props.isDeleting]);
 
     const tableHeaders = ['category_id', 'category_name', 'modifIer'];
     const dataArray = Array.isArray(category) ? category : [];

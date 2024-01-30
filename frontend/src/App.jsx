@@ -11,12 +11,14 @@ import RegisterModal from "./components/RegisterModal/RegisterModal.jsx";
 import { AuthProvider } from "./context/AuthProvider.jsx";
 import ProfilePage from "./Pages/ProfilePage/ProfilePage.jsx";
 import DashboardPage from "./Pages/DashboardPage/DashboardPage.jsx";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [isThemeMode, setIsThemeMode] = useState("dark")
   const [isShowLoginModal, setIsShowLoginModal] = useState(false);
   const [isShowRegisterModal, setIsShowRegisterModal] = useState(false);
-  const [ user, setUser ] = useState(null);
+  const [user, setUser] = useState(null);
 
   const onCloseModalHandler = () => {
     setIsShowLoginModal(false);
@@ -42,7 +44,8 @@ function App() {
 
   return (
     <AuthProvider>
-      <div className={`flex flex-col min-h-screen ${isThemeMode === "light" ? "bg-[#fff7ed]" : "bg-PrimaryBG"} overflow-hidden`}>
+      <div className={`flex flex-col min-h-screen ${isThemeMode === "light" ? "bg-[#ffffff]" : "bg-PrimaryBG"} overflow-hidden`}>
+        <ToastContainer limit={5}/>
         <LoginModal isShowModal={isShowLoginModal} closeModalHandler={onCloseModalHandler} loginModalHandler={showLoginModalHandler} registerModalHandler={showRegisterModalHandler} />
         <RegisterModal isShowModal={isShowRegisterModal} closeModalHandler={onCloseModalHandler} loginModalHandler={showLoginModalHandler} registerModalHandler={showRegisterModalHandler} />
         <Router>
@@ -50,11 +53,11 @@ function App() {
           <div className=" h-full flex-grow ">
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/content" element={<ContentPage loginModalHandler={showLoginModalHandler}/>} />
+              <Route path="/content" element={<ContentPage loginModalHandler={showLoginModalHandler} />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/content/article/:id" element={<ArticlePage />} />
-              <Route path="/profile/:id" element={<ProfilePage />}/>
+              <Route path="/profile/:id" element={<ProfilePage />} />
               <Route path="*" element={<div className=" h-[70vh] items-center flex justify-center font-bold text-[3rem] font-body text-PrimaryColors"> Not Found or You do not have permission.</div>} />
             </Routes>
           </div>

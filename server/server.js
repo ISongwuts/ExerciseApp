@@ -19,10 +19,66 @@ const db = mysql.createConnection({
     port: process.env.port
 });
 
+app.delete('/api/post/delete/:post_id', async (req, res) => {
+    const { post_id } = req.params;
+    try {
+        const postExists = await new Promise((resolve, reject) => {
+            db.query("SELECT * FROM post WHERE post_id = ?", [post_id], (err, result) => {
+                if (err) reject(err);
+                else resolve(result.length > 0);
+            });
+        });
+
+        if (postExists) {
+            await new Promise((resolve, reject) => {
+                db.query("DELETE FROM post WHERE post_id = ?", [post_id], (err, result) => {
+                    if (err) reject(err);
+                    else resolve();
+                });
+            });
+
+            return res.status(200).json({ message: 'Post deleted successfully' });
+        } else {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.delete('/api/user/delete/:user_id', async (req, res) => {
+    const { user_id } = req.params;
+    try {
+        const userExists = await new Promise((resolve, reject) => {
+            db.query("SELECT * FROM user WHERE user_id = ?", [user_id], (err, result) => {
+                if (err) reject(err);
+                else resolve(result.length > 0);
+            });
+        });
+
+        if (userExists) {
+            await new Promise((resolve, reject) => {
+                db.query("DELETE FROM user WHERE user_id = ?", [user_id], (err, result) => {
+                    if (err) reject(err);
+                    else resolve();
+                });
+            });
+
+            return res.status(200).json({ message: 'User deleted successfully' });
+        } else {
+            return res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 app.get('/api/user', async (req, res) => {
     try {
         const result = await new Promise((resolve, reject) => {
-            db.query("SELECT user_id, username, email, birth, role FROM user", (err, result) => {
+            db.query("SELECT * FROM user", (err, result) => {
                 if (err) reject(err);
                 else resolve(result);
             });
@@ -33,7 +89,6 @@ app.get('/api/user', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
-
 
 app.get('/api/post/rowcount', async (req, res) => {
     const { query: { category, value } } = req;

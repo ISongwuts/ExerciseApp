@@ -1,47 +1,33 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react';
 import mascot from '../../assets/png/mascot.png';
-import Swal from 'sweetalert2'
-import validator from "validator";
+import Swal from 'sweetalert2';
+import { useForm } from 'react-hook-form';
+import validator from 'validator';
 import Tooltip from '@mui/material/Tooltip';
+import { toast } from 'react-toastify';
 
 const RegisterForm = () => {
-  const [registerData, setRegisterData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    birth: '',
-    role: 'user'
-  })
+  const { register, handleSubmit, formState: { errors }, getValues } = useForm();
 
-  const validateForm = () => {
-    const isEmailValid = validator.isEmail(registerData.email);
-    const isPasswordValid = registerData.password.length >= 8 && registerData.password === registerData.confirmPassword;
-    const isBirthValid = registerData.birth && registerData.birth.length >= 8;
-
-    return isEmailValid && isPasswordValid && isBirthValid;
-  };
-
-
-  const postRegisterData = async () => {
-    console.log(registerData)
+  const onSubmit = async (data) => {
+    console.log(data);
     try {
       const response = await fetch('http://localhost:3001/api/user/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(registerData)
-      })
+        body: JSON.stringify(data)
+      });
+
       if (response.ok) {
         console.log("the post has been uploaded");
         Swal.fire({
           title: 'Upload Successfuly',
           text: 'Your post will show up at the main page soon.',
           icon: 'success',
-          //timer: 3000,
           confirmButtonText: 'OK',
-        })
+        });
       } else {
         console.log("Fail to register please try again.");
         Swal.fire({
@@ -50,7 +36,7 @@ const RegisterForm = () => {
           icon: 'error',
           timer: 3000,
           confirmButtonText: 'OK',
-        })
+        });
       }
     } catch (error) {
       Swal.fire({
@@ -59,56 +45,44 @@ const RegisterForm = () => {
         icon: 'error',
         timer: 3000,
         confirmButtonText: 'OK',
-      })
+      });
     }
-  }
-
-  const onRegisterSubmit = async (e) => {
-    e.preventDefault();
-    const isFormValid = validateForm();
-    console.log(isFormValid);
-    isFormValid ? postRegisterData() : Swal.fire({
-      title: 'Form Invalid',
-      text: "",
-      icon: 'error',
-      timer: 3000,
-      confirmButtonText: 'OK',
-    });
-  }
-  useEffect(() => {
-    // This effect runs whenever registerData.password changes
-    console.log(registerData.password);
-  }, [registerData.password]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setRegisterData({
-      ...registerData,
-      [name]: value
-    });
   };
 
+  const isEmailValid = (value) => validator.isEmail(value);
+  const isPasswordValid = (value) => value.length >= 8;
+  const isBirthValid = (value) => value && value.length >= 8;
+
   return (
-    <div>
-      <form action="" className='flex flex-col space-y-1'>
-        <label htmlFor="" className='font-bold'>Username</label>
-        <input name='username' onChange={handleChange} type="text" className={`placeholder-InactivePrimary border p-2 border-PrimaryColors  text-PrimaryColors bg-[transparent] rounded-r-myConf`} placeholder='enter username here.' />
-        <label htmlFor="" className='font-bold'>email</label>
-        <input disabled={registerData.username ? false:true} name='email' onChange={handleChange} type="email" className={`placeholder-InactivePrimary border  ${registerData.username ? 'border-PrimaryColors  text-PrimaryColors':'border-[#303030] text-[#303030] cursor-not-allowed'} p-2 bg-[transparent] rounded-r-myConf`} placeholder='Example@mail.com' />
-        <label htmlFor="" className='font-bold'>password</label>
-        <Tooltip arrow title="password must greater than 8 character and atleast 1 uppercase."><input disabled={registerData.email ? false:true} name='password' onChange={handleChange} type="password" className={`placeholder-InactivePrimary border ${registerData.email ? 'border-PrimaryColors  text-PrimaryColors':'border-[#303030] text-[#303030] cursor-not-allowed'} p-2 bg-[transparent] rounded-r-myConf`} placeholder='enter password here.' /></Tooltip>
-        <label htmlFor="" className='font-bold'>confIrm password</label>
-        <input disabled={registerData.password ? false:true} name='confirmPassword' onChange={handleChange} type="password" className={`placeholder-InactivePrimary border ${registerData.password ? 'border-PrimaryColors  text-PrimaryColors':'border-[#303030] text-[#303030] cursor-not-allowed'} p-2 bg-[transparent] rounded-r-myConf`} placeholder='enter password here.' />
-        <label htmlFor="" className='font-bold'>Birth</label>
-        <input disabled={registerData.confirmPassword ? false:true} name='birth' onChange={handleChange} type="date" className={`placeholder-InactivePrimary border p-2 ${registerData.confirmPassword ? 'border-PrimaryColors  text-PrimaryColors':'border-[#303030] cursor-not-allowed'} bg-[transparent] rounded-r-myConf`} placeholder='enter password here.' />
-        <div className='pt-5 flex items-center justify-between'>
-          <button onClick={onRegisterSubmit} type='submit' className='p-1 bg-PrimaryColors text-PrimaryBG text-xl font-bold rounded-r-myConf border-2 border-PrimaryColors w-[35%] hover:text-PrimaryColors hover:border-2 hover:bg-[transparent]'>register</button>
-          <a href="">forgot password?</a>
-        </div>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col space-y-1'>
+      <label htmlFor="" className='font-bold'>Username</label>
+      <input {...register('username', { required: true, maxLength: 20 })} type="text" className={`placeholder-InactivePrimary border p-2 border-PrimaryColors  text-PrimaryColors bg-[transparent] rounded-r-myConf`} placeholder='enter username here.' />
+      {errors.username && toast.error('Username is require.', {autoClose: 5000, toastId: 'username'})}
+      <label htmlFor="" className='font-bold'>Email</label>
+      <input {...register('email', { validate: isEmailValid, required: true })} type="text" className={`placeholder-InactivePrimary border p-2 ${errors.email ? 'border-red-500' : 'border-PrimaryColors text-PrimaryColors'} bg-[transparent] rounded-r-myConf`} placeholder='Example@mail.com' />
+      {errors.email && toast.error('Invalid email address.', {autoClose: 5000, toastId: 'email'})}
+
+      <label htmlFor="" className='font-bold'>Password</label>
+      <Tooltip arrow title="password must be greater than 8 characters.">
+        <input {...register('password', { validate: isPasswordValid, required: true })} type="password" className={`placeholder-InactivePrimary border p-2 ${errors.password ? 'border-red-500' : 'border-PrimaryColors text-PrimaryColors'} bg-[transparent] rounded-r-myConf`} placeholder='enter password here.' />
+      </Tooltip>
+      {errors.password && toast.error('Invalid password.', {autoClose: 5000, toastId: 'password'})}
+
+      <label htmlFor="" className='font-bold'>Confirm Password</label>
+      <input {...register('confirmPassword', { validate: (value) => value === getValues().password, required: true })} type="password" className={`placeholder-InactivePrimary border p-2 ${errors.confirmPassword ? 'border-red-500' : 'border-PrimaryColors text-PrimaryColors'} bg-[transparent] rounded-r-myConf`} placeholder='enter password here.' />
+      {errors.confirmPassword && toast.error('Password do not match.', {autoClose: 5000, toastId: 'cmpwd'})}
+
+      <label htmlFor="" className='font-bold'>Birth</label>
+      <input {...register('birth', { validate: isBirthValid, required: true })} type="date" className={`placeholder-InactivePrimary border p-2 ${errors.birth ? 'border-red-500' : 'border-PrimaryColors text-PrimaryColors'} bg-[transparent] rounded-r-myConf`} placeholder='enter password here.' />
+      {errors.birth && toast.error('Invalid birth date.', { toastId: 'birth' })}
+
+      <div className='pt-5 flex items-center justify-between'>
+        <button type='submit' className='p-1 bg-PrimaryColors text-PrimaryBG text-xl font-bold rounded-r-myConf border-2 border-PrimaryColors w-[35%] hover:text-PrimaryColors hover:border-2 hover:bg-[transparent]'>register</button>
+        <a href="">forgot password?</a>
+      </div>
+    </form>
   );
-}
+};
 
 function RegisterModal(props) {
   return (

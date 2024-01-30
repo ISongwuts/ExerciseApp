@@ -52,7 +52,7 @@ const PostForm = () => {
         { formTitle: "author", formComponent: <TextInput type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'author')} /> },
         { formTitle: "date", formComponent: <DatePicker className="" onValueChange={(date) => handleInputChange({ target: { value: date } }, 'date')} /> },
         { formTitle: "description", formComponent: <TextInput type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'description')} /> },
-        { formTitle: "content", formComponent: <ReactQuill theme="snow" onChange={handleQuillChange} /> },
+        { formTitle: "content", formComponent: <ReactQuill className='displayer' theme="snow" onChange={handleQuillChange} /> },
         { formTitle: "category", formComponent: <CategorySelector setCategoryValue={setCategoryValue} /> },
     ];
 
@@ -147,10 +147,13 @@ const PostForm = () => {
                 {formPattern.map((item, index) => (
                     <div key={index} className='flex flex-col'>
                         <label className='text-2xl font-bold'>{item.formTitle}</label>
-                        {item.formComponent}
+                        <div className='bg-[#ffffff]'>
+                            {item.formComponent}
+                        </div>
+                        
                     </div>
                 ))}
-                <div className=' flex text-3xl justify-center space-x-3'>
+                <div className=' flex text-3xl p-3 justify-center space-x-3'>
                     <button disabled={uploading} 
                         className={` ${uploading ? 'border-[#cccccc] text-[#cccccc] bg-[transparent] hover:border-[#cccccc] hover:text-[#cccccc] hover:bg-[transparent]':null} flex bg-PrimaryColors rounded-myConf border-2 border-PrimaryColors text-PrimaryBG p-2 hover:bg-[transparent] hover:text-PrimaryColors hover:border-2 hover:border-PrimaryColors items-center`}>
                         <IoMdCreate className='text-2xl' /> {uploading ? 'Uploading...' : 'Upload'}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import TableComponent from "./DatabaseTable";
 
-const UserTable = ({ modifier }) => {
+const UserTable = ({ modifier }, props) => {
     const [userData, setUserData] = useState([]);
     const [loading, setLoading] = useState(true);
     const tableHeaders = ['user_id', 'username', 'email', 'birth', 'role'];
@@ -16,6 +16,11 @@ const UserTable = ({ modifier }) => {
         }, 2000);
 
     }, []);
+
+    useEffect(() => {
+        setLoading(props.isDeleting);
+    }, [props.isDeleting]);
+    
     return (
         <div>
             <TableComponent

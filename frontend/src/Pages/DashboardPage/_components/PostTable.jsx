@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import TableComponent from "./DatabaseTable";
 import Paginations from './Pagination';
 
-const PostTable = ({ modifier }) => {
+const PostTable = ({ modifier }, props) => {
     const [postData, setPostData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -17,7 +17,11 @@ const PostTable = ({ modifier }) => {
             setLoading(false);
         }, 2000);
 
-    }, []);
+    },[]);
+
+    useEffect(()=>{
+        setLoading(props.isDeleting);
+    }, [props.isDeleting]);
 
     const tableHeaders = ['post_id', 'post_title', 'post_desc', 'post_article', 'post_date', 'post_feedback', 'modifIer'];
     const indexOfLastItem = currentPage * itemsPerPage;
