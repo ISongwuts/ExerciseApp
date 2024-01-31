@@ -1,52 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import TableComponent from "./DatabaseTable";
-import Paginations from './Pagination';
+import axios from 'axios';
 
 const PostTable = ({ modifier }, props) => {
     const [postData, setPostData] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-        fetch('http://localhost:3001/api/post')
-            .then(response => response.json())
-            .then(data => setPostData(data))
-            .catch(error => console.error('Error fetching post data:', error));
-        setTimeout(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/api/post');
+                setPostData(response.data);
+            } catch (error) {
+                console.error('Error fetching post data:', error);
+            } finally {
+                setTimeout(() => {
+                    setLoading(false);
+                }, 10000);
+            }
+        };
 
-            setLoading(false);
-        }, 2000);
+        fetchData();
 
-    },[]);
+    }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
         setLoading(props.isDeleting);
     }, [props.isDeleting]);
 
-    const tableHeaders = ['post_id', 'post_title', 'post_desc', 'post_article', 'post_date', 'post_feedback', 'modifIer'];
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const slicedData = postData.slice(indexOfFirstItem, indexOfLastItem);
-
-    const handlePageChange = (newPage) => setCurrentPage(newPage);
+    const tableHeaders = ['post_id', 'post_title', 'post_desc', 'post_article', 'post_date', 'post_feedback'];
 
     return (
         <div>
             <TableComponent
                 headers={tableHeaders}
-                data={slicedData}
+                data={postData}
                 modifierButtons={modifier}
                 isLoading={loading}
             />
-
-            <div className='flex'>
-                <Paginations
-                    currentPage={currentPage}
-                    totalPages={Math.ceil(postData.length / itemsPerPage)}
-                    onPageChange={handlePageChange}
-                />
-            </div>
-
         </div>
     );
 };

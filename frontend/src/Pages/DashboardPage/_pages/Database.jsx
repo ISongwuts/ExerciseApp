@@ -21,7 +21,10 @@ const Database = () => {
         setIsLoading(true);
         setIsOpen(true);
         setRowData(rowDatas);
+        console.log(rowDatas);
     }
+
+    const onDialogClose = () => {setIsOpen(false);}
 
     const deleteHandler = async (type, id) => {
         try {
@@ -66,9 +69,14 @@ const Database = () => {
     }, [rowData])
 
     const modifierButtons = [
-        { name: 'Add', icon: <FaPlus />, color: 'bg-[#00a96e] border-[#00a96e] hover:border-[#00a96e] hover:text-[#00a96e]', behavior: () => { } },
-        { name: 'Edit', icon: <MdEdit />, color: 'bg-[#ffcc3d] border-[#ffcc3d] hover:border-[#ffcc3d] hover:text-[#ffcc3d]', behavior: onEditHandler },
-        { name: 'Delete', icon: <MdDelete />, color: 'bg-PrimaryColors border-PrimaryColors hover: border-PrimaryColors hover:text-PrimaryColors', behavior: onDeleteHandler },
+        { name: 'Edit', icon: <MdEdit />, color: 'modifier flex items-center bg-[#ffcc3d] border-[#ffcc3d] hover:border-[#ffcc3d] hover:text-[#ffcc3d]', behavior: onEditHandler },
+        { name: 'Delete', icon: <MdDelete />, color: 'modifier flex items-center bg-PrimaryColors border-PrimaryColors hover: border-PrimaryColors hover:text-PrimaryColors', behavior: onDeleteHandler },
+    ];
+
+    const parentModifierButtons = [
+        { name: 'Add', icon: <FaPlus />, color: 'modifier flex items-center bg-[#00a96e] border-[#00a96e] hover:border-[#00a96e] hover:text-[#00a96e]', behavior: () => { } },
+        { name: 'Edit', icon: <MdEdit />, color: 'modifier flex items-center bg-[#ffcc3d] border-[#ffcc3d] hover:border-[#ffcc3d] hover:text-[#ffcc3d]', behavior: onEditHandler },
+        { name: 'Delete', icon: <MdDelete />, color: 'modifier flex items-center bg-PrimaryColors border-PrimaryColors hover: border-PrimaryColors hover:text-PrimaryColors', behavior: onDeleteHandler },
     ];
 
     const tabPanels = [<PostTable isDeleting={deleting} modifier={modifierButtons} />, <UserTable isDeleting={deleting} modifier={modifierButtons} />, <CategoryTable isDeleting={deleting} modifier={modifierButtons} />]
@@ -78,7 +86,7 @@ const Database = () => {
             <div className='flex justify-between items-center'>
                 <span className='text-3xl'>Database Monitor</span>
                 <div className='flex space-x-2'>
-                    {modifierButtons.map((item, index) => (
+                    {parentModifierButtons.map((item, index) => (
                         <DatabaseModifierButton key={index} {...item} />
                     ))}
                 </div>
@@ -102,9 +110,9 @@ const Database = () => {
                         }
                     </TabPanels>
                 </TabGroup>
-                <Dialog open={isOpen} onClose={(val) => setIsOpen(val)} static={true}>
+                <Dialog className='h-fit' open={isOpen} onClose={(val) => setIsOpen(val)} static={true}>
                     <DialogPanel>
-                        {rowData && <EditPostSection {...rowData} />}
+                        {rowData && <EditPostSection {...rowData} onDialogClose={onDialogClose} />}
                     </DialogPanel>
                 </Dialog>
             </div>

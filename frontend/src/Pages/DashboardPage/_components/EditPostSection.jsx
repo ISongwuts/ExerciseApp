@@ -26,16 +26,17 @@ const CategorySelector = (props) => {
     );
 };
 
-const PostForm = ({ post_id,  post_title, post_desc, post_article, post_date, post_feedback, post_author, category_id }) => {
+const PostForm = ({ post_id, post_title, post_desc, post_article, post_date, post_feedback, post_author, category_id, onClose }) => {
     const [uploading, setUploading] = useState(false);
     const [formData, setFormData] = useState({
-        id: '',
-        title: '',
-        author: '',
-        date: '',
-        description: '',
-        content: '',
-        category: '',
+        id: post_id,
+        title: post_title,
+        author: post_author,
+        date: post_date,
+        description: post_desc,
+        content: post_article,
+        category: category_id,
+        feedback: post_feedback
     });
 
     const setCategoryValue = (value) => {
@@ -48,12 +49,13 @@ const PostForm = ({ post_id,  post_title, post_desc, post_article, post_date, po
     };
 
     const formPattern = [
-        { formTitle: "title", formComponent: <TextInput value={post_title} type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'title')} /> },
-        { formTitle: "author", formComponent: <TextInput value={post_author} type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'author')} /> },
-        { formTitle: "date", formComponent: <DatePicker  className="" onValueChange={(date) => handleInputChange({ target: { value: date } }, 'date')} /> },
-        { formTitle: "description", formComponent: <TextInput value={post_desc} type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'description')} /> },
-        { formTitle: "content", formComponent: <ReactQuill value={post_article} theme="snow" onChange={handleQuillChange} /> },
-        { formTitle: "category", formComponent: <CategorySelector value={category_id} setCategoryValue={setCategoryValue} /> },
+        { formTitle: "title", formComponent: <TextInput value={formData.title} type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'title')} /> },
+        { formTitle: "author", formComponent: <TextInput value={formData.author} type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'author')} /> },
+        { formTitle: "date", formComponent: <DatePicker className="" onValueChange={(date) => handleInputChange({ target: { value: date } }, 'date')} /> },
+        { formTitle: "description", formComponent: <TextInput value={formData.description} type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'description')} /> },
+        { formTitle: "category", formComponent: <CategorySelector setCategoryValue={setCategoryValue} /> },
+        { formTitle: "content", formComponent: <ReactQuill value={formData.content} theme="snow" onChange={handleQuillChange} /> },
+
     ];
 
     useEffect(() => {
@@ -65,8 +67,8 @@ const PostForm = ({ post_id,  post_title, post_desc, post_article, post_date, po
         event.preventDefault();
         setTimeout(async () => {
             try {
-                const response = await fetch('http://localhost:3001/api/upload', {
-                    method: 'POST',
+                const response = await fetch(`http://localhost:3001/api/upload/${formData.id}`, {
+                    method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -75,14 +77,14 @@ const PostForm = ({ post_id,  post_title, post_desc, post_article, post_date, po
                 setUploading(false);
 
                 if (response.ok) {
-                    console.log("The post has been uploaded");
+                    console.log(formData);
                     showSuccessAlert();
                 } else {
-                    console.log("Failed to upload the post");
-                    showErrorAlert('Upload Failed', 'Failed to upload the post. Please try again.');
+                    console.log("Failed to Update the post");
+                    showErrorAlert('Update Failed', 'Failed to update the post. Please try again.');
                 }
             } catch (error) {
-                showErrorAlert('Upload Failed', error.message);
+                showErrorAlert('Update Failed', error.message);
             }
         }, 2000);
         setUploading(true);
@@ -106,7 +108,7 @@ const PostForm = ({ post_id,  post_title, post_desc, post_article, post_date, po
 
     const showSuccessAlert = () => {
         Swal.fire({
-            title: 'Upload Successful',
+            title: 'Update Successful',
             text: 'Your post will show up on the main page soon.',
             icon: 'success',
             confirmButtonText: 'OK',
@@ -125,20 +127,29 @@ const PostForm = ({ post_id,  post_title, post_desc, post_article, post_date, po
 
     return (
         <div className='font-body w-[100%] text-PrimaryColors'>
-            <form className='flex gap-4 flex-col' onSubmit={postFormHandler}>
+            <form className='flex gap-4 flex-col'>
                 {formPattern.map((item, index) => (
                     <div key={index} className='flex flex-col'>
                         <label className='text-2xl font-bold'>{item.formTitle}</label>
                         {item.formComponent}
                     </div>
                 ))}
-                <div className=' flex text-3xl justify-center space-x-3'>
-                    <button disabled={uploading} 
-                        className={` ${uploading ? 'border-[#cccccc] text-[#cccccc] bg-[transparent] hover:border-[#cccccc] hover:text-[#cccccc] hover:bg-[transparent]':null} flex bg-PrimaryColors rounded-myConf border-2 border-PrimaryColors text-PrimaryBG p-2 hover:bg-[transparent] hover:text-PrimaryColors hover:border-2 hover:border-PrimaryColors items-center`}>
-                        <IoMdCreate className='text-2xl' /> {uploading ? 'Uploading...' : 'Upload'}
+                <div className=' flex text-xl justify-center space-x-3'>
+                    <button onClick={(e) => postFormHandler(e)} type='submit' disabled={uploading}
+                        className={` ${uploading ? 'border-[#cccccc] text-[#cccccc] bg-[transparent] hover:border-[#cccccc] hover:text-[#cccccc] hover:bg-[transparent]' : null} flex bg-[#00a96e] rounded-myConf border-2 border-[#00a96e] text-PrimaryBG px-2 py-1 hover:bg-[transparent] hover:text-[#00a96e] hover:border-2 hover:border-[#00a96e] items-center`}>
+                        <IoMdCreate className='text-2xl' /> {uploading ? 'Updating...' : 'Update'}
                     </button>
-                    <button onClick={() => setFormData({})} className='flex bg-[#fde047] border-[#fde047] border-2 hover:bg-[transparent] hover:text-[#fde047] hover:border-2 hover:border-[#fde047] rounded-myConf text-PrimaryBG p-2 items-center'>
+                    <button onClick={(e) => {
+                        e.preventDefault();
+                        setFormData({});
+                    }} className='flex bg-[#fde047] border-[#fde047] border-2 hover:bg-[transparent] hover:text-[#fde047] hover:border-2 hover:border-[#fde047] rounded-myConf text-PrimaryBG px-2 py-1 items-center'>
                         <FaTrashAlt className='text-2xl' /> Clear
+                    </button>
+                    <button onClick={(e) => {
+                        e.preventDefault();
+                        onClose();  // Invoke the onClose function
+                    }} className='flex bg-PrimaryColors border-PrimaryColors border-2 hover:bg-[transparent] hover:text-PrimaryColors hover:border-2 hover:border-PrimaryColors rounded-myConf text-PrimaryBG px-2 py-1 items-center'>
+                        <FaTrashAlt className='text-2xl' /> Close
                     </button>
                 </div>
             </form>
@@ -146,13 +157,23 @@ const PostForm = ({ post_id,  post_title, post_desc, post_article, post_date, po
     );
 };
 
-function EditPostSection({ post_id,  post_title, post_desc, post_article, post_date, post_feedback, post_author, category_id }) {
+function EditPostSection({ post_id, post_title, post_desc, post_article, post_date, post_feedback, post_author, category_id, onClose }) {
     return (
-        <div className=' font-body w-[100%] flex flex-col items-center'>
-            <div className=' text-4xl p-3 flex'>
-                <span >Update: {post_id}</span>
+        <div className='font-body w-[100%] h-fit flex flex-col items-center'>
+            <div className='text-4xl p-3 flex'>
+                <span>Update: {post_id}</span>
             </div>
-            <PostForm {...{ post_id,  post_title, post_desc, post_article, post_date, post_feedback, post_author, category_id }}/>
+            <PostForm
+                post_id={post_id}
+                post_title={post_title}
+                post_desc={post_desc}
+                post_article={post_article}
+                post_date={post_date}
+                post_feedback={post_feedback}
+                post_author={post_author}
+                category_id={category_id}
+                onClose={onClose}
+            />
         </div>
     );
 }

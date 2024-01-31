@@ -42,7 +42,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     background-color: #00a96e !important;
 }
 .MuiDivider-root{
-    border: 0.1px solid #602929 !important;
+    border: 0.1px solid #4d2a2a !important;
 
 }
 .tremor-Tab-root:focus{
@@ -55,6 +55,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border-bottom: 2px solid #FF5858 !important;
 }
 .tremor-Tab-root::after{
+    color: #FF5858 !important;
+    border-bottom: 2px solid #FF5858 !important;
+}
+
+.ui-selected\:text-tremor-brand[data-headlessui-state~="selected"] {
     color: #FF5858 !important;
     border-bottom: 2px solid #FF5858 !important;
 }
@@ -73,4 +78,88 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .ql-toolbar{
     @apply bg-PrimaryColors;
+}
+.heroError{
+    color: #eee;
+}
+table,
+.divTable {
+    width: fit-content;
+}
+
+.tr {
+    display: flex;
+}
+
+tr,
+.tr {
+    width: fit-content;
+    height: 30px;
+}
+
+th{
+    border: 1px solid #FF5858 ;
+}
+
+th,
+.th,
+td,
+.td {
+    padding: 1rem;
+}
+tr:hover{
+    cursor: pointer;
+    @apply bg-[#181818];
+}
+
+th,
+.th {
+    padding: 2px 4px;
+    position: relative;
+    font-weight: bold;
+    text-align: center;
+    height: 30px;
+}
+
+
+.resizer {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 5px;
+    @apply bg-InactivePrimary;
+    cursor: col-resize;
+    user-select: none;
+    touch-action: none;
+}
+
+.resizer.ltr {
+    right: 0;
+}
+
+.resizer.rtl {
+    left: 0;
+}
+
+.resizer.isResizing {
+    @apply bg-PrimaryColors;
+    opacity: 1;
+}
+
+@media (hover: hover) {
+    .resizer {
+        opacity: 0;
+    }
+
+    *:hover>.resizer {
+        opacity: 1;
+    }
+}
+
+input[type="checkbox"]::before{
+    background-color: #242424;
+}
+
+.modifier{
+    @apply hover:bg-[transparent] border px-[1rem] py-[.35rem] rounded-[5px] text-lg
 }

@@ -1,38 +1,39 @@
 import React from 'react';
 import mascot from '../../assets/png/mascot.png';
 import Swal from 'sweetalert2';
-import { useForm } from 'react-hook-form';
-import validator from 'validator';
+import { useForm, Controller } from 'react-hook-form';
 import Tooltip from '@mui/material/Tooltip';
-import { toast } from 'react-toastify';
+import schema from './schema.validator';
+import { yupResolver } from '@hookform/resolvers/yup';
+import axios from 'axios';
 
 const RegisterForm = () => {
-  const { register, handleSubmit, formState: { errors }, getValues } = useForm();
+  const { control, handleSubmit, formState: { errors }, getValues } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const response = await fetch('http://localhost:3001/api/user/register', {
-        method: 'POST',
+      const response = await axios.post('http://localhost:3001/api/user/register', data, {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data)
       });
 
-      if (response.ok) {
+      if (response.status === 200) {
         console.log("the post has been uploaded");
         Swal.fire({
-          title: 'Upload Successfuly',
-          text: 'Your post will show up at the main page soon.',
+          title: 'Upload Successfully',
+          text: 'Your post will show up on the main page soon.',
           icon: 'success',
           confirmButtonText: 'OK',
         });
       } else {
-        console.log("Fail to register please try again.");
+        console.log("Fail to register, please try again.");
         Swal.fire({
           title: 'Register Failed',
-          text: 'Fail to register please try again.',
+          text: 'Fail to register, please try again.',
           icon: 'error',
           timer: 3000,
           confirmButtonText: 'OK',
@@ -48,33 +49,82 @@ const RegisterForm = () => {
       });
     }
   };
-
-  const isEmailValid = (value) => validator.isEmail(value);
-  const isPasswordValid = (value) => value.length >= 8;
-  const isBirthValid = (value) => value && value.length >= 8;
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col space-y-1'>
       <label htmlFor="" className='font-bold'>Username</label>
-      <input {...register('username', { required: true, maxLength: 20 })} type="text" className={`placeholder-InactivePrimary border p-2 border-PrimaryColors  text-PrimaryColors bg-[transparent] rounded-r-myConf`} placeholder='enter username here.' />
-      {errors.username && toast.error('Username is require.', {autoClose: 5000, toastId: 'username'})}
+      <Controller
+        name="username"
+        control={control}
+        render={({ field }) => (
+          <input
+            {...field}
+            type="text"
+            className={`placeholder-InactivePrimary border p-2 border-PrimaryColors text-PrimaryColors bg-[transparent] rounded-r-myConf`}
+            placeholder='enter username here.'
+          />
+        )}
+      />
+      {errors.username && <p className='heroError'>*{errors.username.message}</p>}
+
       <label htmlFor="" className='font-bold'>Email</label>
-      <input {...register('email', { validate: isEmailValid, required: true })} type="text" className={`placeholder-InactivePrimary border p-2 ${errors.email ? 'border-red-500' : 'border-PrimaryColors text-PrimaryColors'} bg-[transparent] rounded-r-myConf`} placeholder='Example@mail.com' />
-      {errors.email && toast.error('Invalid email address.', {autoClose: 5000, toastId: 'email'})}
+      <Controller
+        name="email"
+        control={control}
+        render={({ field }) => (
+          <input
+            {...field}
+            type="text"
+            className={`placeholder-InactivePrimary border p-2 ${errors.email ? 'border-red-500' : 'border-PrimaryColors text-PrimaryColors'} bg-[transparent] rounded-r-myConf`}
+            placeholder='Example@mail.com'
+          />
+        )}
+      />
+      {errors.email && <p className='heroError'>*{errors.email.message}</p>}
 
       <label htmlFor="" className='font-bold'>Password</label>
-      <Tooltip arrow title="password must be greater than 8 characters.">
-        <input {...register('password', { validate: isPasswordValid, required: true })} type="password" className={`placeholder-InactivePrimary border p-2 ${errors.password ? 'border-red-500' : 'border-PrimaryColors text-PrimaryColors'} bg-[transparent] rounded-r-myConf`} placeholder='enter password here.' />
-      </Tooltip>
-      {errors.password && toast.error('Invalid password.', {autoClose: 5000, toastId: 'password'})}
+      <Controller
+        name="password"
+        control={control}
+        render={({ field }) => (
+          <input
+            {...field}
+            type="password"
+            className={`placeholder-InactivePrimary border p-2 ${errors.password ? 'border-red-500' : 'border-PrimaryColors text-PrimaryColors'} bg-[transparent] rounded-r-myConf`}
+            placeholder='enter password here.'
+          />
+        )}
+      />
+      {errors.password && <p className='heroError'>*{errors.password.message}</p>}
 
-      <label htmlFor="" className='font-bold'>Confirm Password</label>
-      <input {...register('confirmPassword', { validate: (value) => value === getValues().password, required: true })} type="password" className={`placeholder-InactivePrimary border p-2 ${errors.confirmPassword ? 'border-red-500' : 'border-PrimaryColors text-PrimaryColors'} bg-[transparent] rounded-r-myConf`} placeholder='enter password here.' />
-      {errors.confirmPassword && toast.error('Password do not match.', {autoClose: 5000, toastId: 'cmpwd'})}
+      <label htmlFor="" className='font-bold'>ConfIrm Password</label>
+      <Controller
+        name="confirPassword"
+        control={control}
+        render={({ field }) => (
+          <input
+            {...field}
+            type="password"
+            className={`placeholder-InactivePrimary border p-2 ${errors.confirmPassword ? 'border-red-500' : 'border-PrimaryColors text-PrimaryColors'} bg-[transparent] rounded-r-myConf`}
+            placeholder='enter password here.'
+          />
+        )}
+      />
+      {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
 
       <label htmlFor="" className='font-bold'>Birth</label>
-      <input {...register('birth', { validate: isBirthValid, required: true })} type="date" className={`placeholder-InactivePrimary border p-2 ${errors.birth ? 'border-red-500' : 'border-PrimaryColors text-PrimaryColors'} bg-[transparent] rounded-r-myConf`} placeholder='enter password here.' />
-      {errors.birth && toast.error('Invalid birth date.', { toastId: 'birth' })}
+      <Controller
+        name="birth"
+        control={control}
+        render={({ field }) => (
+          <input
+            {...field}
+            type="date"
+            className={`placeholder-InactivePrimary border p-2 ${errors.birth ? 'border-red-500' : 'border-PrimaryColors text-PrimaryColors'} bg-[transparent] rounded-r-myConf`}
+            placeholder='enter password here.'
+          />
+        )}
+      />
+      {errors.birth && <p className='heroError'>*{errors.birth.message}</p>}
 
       <div className='pt-5 flex items-center justify-between'>
         <button type='submit' className='p-1 bg-PrimaryColors text-PrimaryBG text-xl font-bold rounded-r-myConf border-2 border-PrimaryColors w-[35%] hover:text-PrimaryColors hover:border-2 hover:bg-[transparent]'>register</button>

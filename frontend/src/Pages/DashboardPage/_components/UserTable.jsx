@@ -1,26 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import TableComponent from "./DatabaseTable";
+import axios from 'axios';
 
 const UserTable = ({ modifier }, props) => {
     const [userData, setUserData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const tableHeaders = ['user_id', 'username', 'email', 'birth', 'role'];
+    const tableHeaders = ['user_id', 'username', 'password', 'email', 'birth', 'role', 'modification'];
     useEffect(() => {
-        fetch('http://localhost:3001/api/user')
-            .then(response => response.json())
-            .then(data => setUserData(data))
-            .catch(error => console.error('Error fetching post data:', error));
-        setTimeout(() => {
-
-            setLoading(false);
-        }, 2000);
-
-    }, []);
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/api/user');
+                setUserData(response.data);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            } finally {
+                setTimeout(() => {
+                    setLoading(false);
+                }, 10000);
+            }
+        };
+        fetchData();
+    }, [loading]);
 
     useEffect(() => {
         setLoading(props.isDeleting);
     }, [props.isDeleting]);
-    
+
     return (
         <div>
             <TableComponent
