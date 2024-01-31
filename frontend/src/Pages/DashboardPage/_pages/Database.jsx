@@ -9,7 +9,8 @@ import CategoryTable from '../_components/CategoryTable';
 import EditPostSection from '../_components/EditPostSection'
 import Swal from 'sweetalert2';
 import axios from 'axios';
-
+import EditUserSection from '../_components/editUserSection';
+import EditCategorySection from '../_components/EditCategorySection';
 
 const Database = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -112,7 +113,9 @@ const Database = () => {
                 </TabGroup>
                 <Dialog className='h-fit' open={isOpen} onClose={(val) => setIsOpen(val)} static={true}>
                     <DialogPanel>
-                        {rowData && <EditPostSection {...rowData} onDialogClose={onDialogClose} />}
+                        {rowData && 'post_id' in rowData && <EditPostSection {...rowData} onDialogClose={onDialogClose} />}
+                        {rowData && 'user_id' in rowData && <EditUserSection {...rowData} onDialogClose={onDialogClose}/>}
+                        {rowData && 'category_name' in rowData && <EditCategorySection {...rowData} onDialogClose={onDialogClose}/>}
                     </DialogPanel>
                 </Dialog>
             </div>

@@ -5,7 +5,7 @@ import axios from 'axios';
 const UserTable = ({ modifier }, props) => {
     const [userData, setUserData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const tableHeaders = ['user_id', 'username', 'password', 'email', 'birth', 'role', 'modification'];
+    const tableHeaders = ['user_id', 'username', 'password', 'email', 'birth', 'role'];
     useEffect(() => {
         const fetchData = async () => {
             try {

@@ -104,7 +104,7 @@ const TableComponent = ({ headers, data, modifierButtons, isLoading }) => {
     }, [isLoading]);
 
     return (
-        <div className='w-full flex flex-col items-center gap-5'>
+        <div className='w-full flex flex-col items-center gap-5 overflow-x-auto'>
             <div className='w-fit p-4 bg-[#202020]'>
                 <table className="w-full" {...{
                     style: {
