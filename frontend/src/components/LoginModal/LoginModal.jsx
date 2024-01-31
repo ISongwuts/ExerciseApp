@@ -23,6 +23,7 @@ function LoginModal(props) {
       })
       if (response.ok) {
         const userData = await response.json();
+        localStorage.setItem('jwt', userData.user.token);
         login(userData);
         Swal.fire({
           title: 'Logged In Successfuly',
