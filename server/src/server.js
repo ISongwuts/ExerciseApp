@@ -14,6 +14,16 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
+app.use(express.static(__dirname));
+app.get('/style.css', function(req, res) {
+    res.sendFile(__dirname + "/src/style/index.css");
+  });
+
+app.get('/', (req, res)=>{
+    res.sendFile(path.join(__dirname+'/src/index.html'));
+});
+
 app.use(postRouter);
 app.use(userRouter);
 app.use(categoryRouter);
