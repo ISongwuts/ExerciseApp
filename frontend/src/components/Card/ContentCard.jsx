@@ -8,7 +8,7 @@ import chestImg from '../../assets/icon/chest.ico';
 import bottomImg from '../../assets/icon/bottom.ico';
 import { useAuth } from '../../context/AuthProvider';
 import Swal from 'sweetalert2';
-
+import Image from 'mui-image';
 
 function ContentCard(props) {
   const [isHovered, setIsHovered] = useState(false);
@@ -49,7 +49,9 @@ function ContentCard(props) {
     >
       <div className="xl:w-[25rem] max-CollapseCard-sm:w-[15rem] xl:h-[15rem] max-CollapseCard-sm:h-[10rem] font-body">
         <div className="flex flex-col">
-          <div className={`rounded-t-myConf xl:h-36 max-xl:h-36 max-CollapseCard-sm:h-24 ${isHovered ? 'bg-PrimaryColors' : 'bg-InactivePrimary'}`}><img className='h-[100%] m-auto p-2' src={imgResource.at(parseInt(props.type.match(/\d+/)?.[0], 10) - 1)} alt="" /></div>
+          <div className={`rounded-t-myConf xl:h-36 max-xl:h-36 max-CollapseCard-sm:h-24 ${isHovered ? 'bg-PrimaryColors' : 'bg-InactivePrimary'}`}>
+            <Image fit='none' className='h-[100%] m-auto p-2' src={props.image ? props.image : imgResource.at(parseInt(props.type.match(/\d+/)?.[0], 10) - 1)} alt="" />
+          </div>
           <div className="flex flex-col m-3 ">
             <div className='flex flex-row justify-between'>
               <span className="text-PrimaryColors xl:text-xl max-xl:text-lg max-lg:text-lg max-sm:text-lg">{props.title.length > 20 ? props.title.slice(0, 20) + "..." : props.title}</span>

@@ -31,6 +31,29 @@ postRouter.delete('/api/post/delete/:post_id', async (req, res) => {
     }
 });
 
+postRouter.get('/api/post/search', async (req, res) => {
+    const { search } = req.query;
+    try {
+        const query = `SELECT * FROM post 
+                       WHERE post_id LIKE ? OR 
+                       post_title LIKE ? OR
+                       post_desc LIKE ? OR
+                       post_article LIKE ? OR
+                       post_author LIKE ?`;
+
+        const data = await new Promise((resolve, reject) => {
+            db.query(query, [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`], (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            });
+        });
+
+        return res.send(data);
+    } catch (error) {
+        return res.status(500).send('Error: ' + error.message);
+    }
+});
+
 postRouter.get('/api/post/rowcount', async (req, res) => {
     const { query: { category, value } } = req;
     console.log(req.query);

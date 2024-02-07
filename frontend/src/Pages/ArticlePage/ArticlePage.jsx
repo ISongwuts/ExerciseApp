@@ -17,7 +17,7 @@ function ArticlePage() {
   return (
     <div className=" h-full w-full flex justify-center p-10">
       {!loading ? (
-        <article className="prose lg:prose-xl font-body">
+        <article className="prose lg:prose-xl w-1/2 flex flex-col gap-3 font-body">
           <h1 className="border-l-8 p-6 bg-[#202020] border-PrimaryColors text-PrimaryColors indent-16">
             {data.title}
           </h1>
@@ -32,7 +32,7 @@ function ArticlePage() {
           </p>
         </article>
       ) : (
-        <article className="prose lg:prose-xl font-body w-[100%]">
+        <article className="prose lg:prose-xl w-1/2 flex flex-col gap-3 font-body">
           <Skeleton height={300} animation="wave"/>
           <Skeleton height={50} animation="wave"/>
           <Skeleton height={50} animation="wave"/>

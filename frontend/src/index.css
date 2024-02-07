@@ -82,6 +82,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .heroError{
     color: #eee;
 }
+
 table,
 .divTable {
     width: fit-content;
@@ -97,19 +98,15 @@ tr,
     height: 30px;
 }
 
-th{
-    border: 1px solid #FF5858 ;
-}
-
 th,
 .th,
 td,
 .td {
-    padding: 1rem;
+    padding: .5rem;
+    text-align: center;
 }
 tr:hover{
     cursor: pointer;
-    @apply bg-[#181818];
 }
 
 th,
@@ -162,4 +159,7 @@ input[type="checkbox"]::before{
 
 .modifier{
     @apply hover:bg-[transparent] border px-[1rem] py-[.35rem] rounded-[5px] text-lg
+}
+.mui-image-wrapper {
+    border-radius: 20px !important;
 }

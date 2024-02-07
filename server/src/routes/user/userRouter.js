@@ -32,6 +32,34 @@ userRouter.delete('/api/user/delete/:user_id', async (req, res) => {
     }
 });
 
+userRouter.put('/api/user/:userId', async (req, res) => {
+    console.log('Received a PUT request to /api/user');
+    console.log(req.body);
+
+    try {
+        const userId = req.params.userId;
+        const userData = req.body;
+        const updateQuery = 'UPDATE user SET username = ?, password = ?, email = ?, birth = ?, role = ? WHERE user_id = ?';
+        db.query(updateQuery, [userData.username, userData.password, userData.email, userData.birth.split("T")[0], userData.role, userId], (error, result) => {
+            if (error) {
+                console.error(error.message);
+                res.status(500).send('Internal Server Error');
+            } else {
+                if (result.affectedRows > 0) {
+                    console.log('Data updated successfully');
+                    res.status(200).json({ message: 'Update successful' });
+                } else {
+                    console.log('No matching record found for update');
+                    res.status(404).json({ message: 'No matching record found for update' });
+                }
+            }
+        });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 userRouter.get('/api/user', async (req, res) => {
     try {
         const token = req.headers['authorization'].split(' ')[1];
@@ -46,6 +74,27 @@ userRouter.get('/api/user', async (req, res) => {
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Internal Server Error');
+    }
+});
+
+userRouter.get('/api/user/search', async (req, res) => {
+    const { search } = req.query;
+    try {
+        const query = `SELECT * FROM user
+                       WHERE user_id LIKE ? OR 
+                       username LIKE ? OR
+                       email LIKE ?`;
+
+        const data = await new Promise((resolve, reject) => {
+            db.query(query, [`%${search}%`, `%${search}%`, `%${search}%`], (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            });
+        });
+
+        return res.send(data);
+    } catch (error) {
+        return res.status(500).send('Error: ' + error.message);
     }
 });
 

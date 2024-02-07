@@ -2,7 +2,6 @@ import React from 'react';
 import mascot from '../../assets/png/mascot.png';
 import Swal from 'sweetalert2';
 import { useForm, Controller } from 'react-hook-form';
-import Tooltip from '@mui/material/Tooltip';
 import schema from './schema.validator';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
@@ -109,7 +108,7 @@ const RegisterForm = () => {
           />
         )}
       />
-      {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+      {errors.confirmPassword && <p className='heroError'>{errors.confirmPassword.message}</p>}
 
       <label htmlFor="" className='font-bold'>Birth</label>
       <Controller

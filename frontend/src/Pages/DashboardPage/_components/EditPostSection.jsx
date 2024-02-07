@@ -5,10 +5,21 @@ import { FaTrashAlt } from "react-icons/fa";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import Swal from 'sweetalert2';
+import Image from 'mui-image';
+import axios from 'axios';
 
 const CategorySelector = (props) => {
-    const categories = ["chest", "abdominal", "arm", "leg", "bottom", "shoulder"];
-    const [value, setValue] = useState(props.value || "");
+    const [value, setValue] = useState("");
+    const [category, setCategory] = useState([]);
+
+    const fetchCategory = async () => {
+        const res = await axios.get('http://localhost:3001/api/category');
+        setCategory(res.data);
+        console.log(category)
+    }
+    useEffect(() => {
+        fetchCategory();
+    }, [])
 
     const handleCategoryChange = (selectedValue) => {
         setValue(selectedValue);
@@ -16,21 +27,22 @@ const CategorySelector = (props) => {
     };
 
     return (
-        <Select className=' w-[100%]' value={value} onValueChange={handleCategoryChange}>
-            {categories.map((item, index) => (
-                <SelectItem key={index} value={index + 1}>
-                    {item}
+        <Select className=' w-[100%]' value={props.category} onValueChange={handleCategoryChange}>
+            {category.map((item, index) => (
+                <SelectItem key={index} value={item.category_id}>
+                    {item.category_name}
                 </SelectItem>
             ))}
         </Select>
     );
 };
 
-const PostForm = ({ post_id, post_title, post_desc, post_article, post_date, post_feedback, post_author, category_id, onClose }) => {
+const PostForm = ({ post_id, post_title, post_desc, post_article, post_date, post_feedback, post_author, category_id, cover_image, onClose }) => {
     const [uploading, setUploading] = useState(false);
     const [formData, setFormData] = useState({
         id: post_id,
         title: post_title,
+        image: cover_image,
         author: post_author,
         date: post_date,
         description: post_desc,
@@ -40,8 +52,8 @@ const PostForm = ({ post_id, post_title, post_desc, post_article, post_date, pos
     });
 
     const setCategoryValue = (value) => {
-        const categoryFormat = `category-00${value}`;
-        handleInputChange({ target: { value: categoryFormat } }, 'category');
+        console.log(value);
+        handleInputChange({ target: { value: value } }, 'category');
     };
 
     const handleQuillChange = (content) => {
@@ -50,10 +62,11 @@ const PostForm = ({ post_id, post_title, post_desc, post_article, post_date, pos
 
     const formPattern = [
         { formTitle: "title", formComponent: <TextInput value={formData.title} type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'title')} /> },
+        { formTitle: "Image", formComponent: <TextInput value={formData.image} type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'image')} /> },
         { formTitle: "author", formComponent: <TextInput value={formData.author} type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'author')} /> },
         { formTitle: "date", formComponent: <DatePicker className="" onValueChange={(date) => handleInputChange({ target: { value: date } }, 'date')} /> },
         { formTitle: "description", formComponent: <TextInput value={formData.description} type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'description')} /> },
-        { formTitle: "category", formComponent: <CategorySelector setCategoryValue={setCategoryValue} /> },
+        { formTitle: "category", formComponent: <CategorySelector category={formData.category} setCategoryValue={setCategoryValue} /> },
         { formTitle: "content", formComponent: <ReactQuill value={formData.content} theme="snow" onChange={handleQuillChange} /> },
 
     ];
@@ -126,7 +139,10 @@ const PostForm = ({ post_id, post_title, post_desc, post_article, post_date, pos
     };
 
     return (
-        <div className='font-body w-[100%] text-PrimaryColors'>
+        <div className='font-body w-[100%] flex flex-col gap-4 text-PrimaryColors'>
+            <div className='w-full h-[15rem]  border bg-[#eee] p-2 '>
+                <Image fit='none' src={formData.image} />
+            </div>
             <form className='flex gap-4 flex-col'>
                 {formPattern.map((item, index) => (
                     <div key={index} className='flex flex-col'>
@@ -157,7 +173,7 @@ const PostForm = ({ post_id, post_title, post_desc, post_article, post_date, pos
     );
 };
 
-function EditPostSection({ post_id, post_title, post_desc, post_article, post_date, post_feedback, post_author, category_id, onClose }) {
+function EditPostSection({ post_id, post_title, post_desc, post_article, post_date, post_feedback, post_author, category_id, cover_image, onClose }) {
     return (
         <div className='font-body w-[100%] h-fit flex flex-col items-center'>
             <div className='text-4xl p-3 flex'>
@@ -172,6 +188,7 @@ function EditPostSection({ post_id, post_title, post_desc, post_article, post_da
                 post_feedback={post_feedback}
                 post_author={post_author}
                 category_id={category_id}
+                cover_image={cover_image}
                 onClose={onClose}
             />
         </div>

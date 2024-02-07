@@ -50,7 +50,6 @@ const TableComponent = ({ headers, data, modifierButtons, isLoading }) => {
                     </span>
                 ),
                 header: name,
-                size: 200,
                 enableResizing: true,
                 minSize: 50,
                 maxSize: 500
@@ -124,7 +123,7 @@ const TableComponent = ({ headers, data, modifierButtons, isLoading }) => {
                                                     width: header.getSize(),
                                                 },
                                             }}
-                                                className='p-2'
+                                                className='p-2 border '
                                             >
                                                 {flexRender(
                                                     header.column.columnDef.header,
@@ -164,7 +163,7 @@ const TableComponent = ({ headers, data, modifierButtons, isLoading }) => {
                     <tbody>
                         {!isLoading || isLoading !== undefined ? (
                             table.getRowModel().rows.map((row, i) => (
-                                <tr key={row.id} className={`${i % 2 === 0 ? null : 'bg-[#202020]'} text-sm`}>
+                                <tr key={row.id} className={`${i % 2 === 0 ? null : 'bg-[#191919]'} text-sm hover:bg-[#191919]`}>
                                     {row.getVisibleCells().map(cell => (
                                         <td
                                             {...{
@@ -186,10 +185,10 @@ const TableComponent = ({ headers, data, modifierButtons, isLoading }) => {
                             table.getRowModel().rows.map((row, i) => (
                                 <tr
                                     key={row.id}
-                                    className={`${i % 2 === 0 ? "bg-[#fff]" : "bg-slate-100"}`}
+                                    className={`${i % 2 === 0 ? null : "bg-[#191919]"}`}
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <td key={cell.id} className="p-2 text-sm">
+                                        <td key={cell.id} className=" text-sm">
                                             <Skeleton animation="wave" height={25} />
                                         </td>
                                     ))}

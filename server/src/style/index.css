@@ -1,0 +1,22 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+th, td{
+    padding: .5rem 2rem .5rem 2rem;
+    text-align: start;
+}
+
+tr{
+    border-bottom: 1px solid #404040;
+}
+
+a{
+    text-decoration: underline;
+    color: rgb(0, 153, 255);
+}
+
+.method{
+    color: rgb(255, 182, 87);
+}

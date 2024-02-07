@@ -149,6 +149,7 @@ function ContentPage(props) {
                   desc={attr.post_desc}
                   article={attr.post_article}
                   date={attr.post_date}
+                  image={attr.cover_image}
                 />
               </motion.div>
 

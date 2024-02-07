@@ -5,10 +5,21 @@ import { FaTrashAlt } from "react-icons/fa";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import Swal from 'sweetalert2';
+import { Image } from 'mui-image'
+import axios from 'axios';
 
 const CategorySelector = (props) => {
-    const categories = ["chest", "abdominal", "arm", "leg", "bottom", "shoulder"];
     const [value, setValue] = useState("");
+    const [category, setCategory] = useState([]);
+    
+    const fetchCategory = async () =>{
+        const res = await axios.get('http://localhost:3001/api/category');
+        setCategory(res.data);
+        console.log(category)
+    }
+    useEffect(()=>{
+        fetchCategory();
+    }, [])  
 
     const handleCategoryChange = (selectedValue) => {
         setValue(selectedValue);
@@ -17,9 +28,9 @@ const CategorySelector = (props) => {
 
     return (
         <Select className=' w-[100%]' value={value} onValueChange={handleCategoryChange}>
-            {categories.map((item, index) => (
-                <SelectItem key={index} value={index + 1}>
-                    {item}
+            {category.map((item, index) => (
+                <SelectItem key={index} value={item.category_id}>
+                    {item.category_name}
                 </SelectItem>
             ))}
         </Select>
@@ -31,6 +42,7 @@ const PostForm = () => {
     const [formData, setFormData] = useState({
         id: '',
         title: '',
+        image: '',
         author: '',
         date: '',
         description: '',
@@ -39,8 +51,8 @@ const PostForm = () => {
     });
 
     const setCategoryValue = (value) => {
-        const categoryFormat = `category-00${value}`;
-        handleInputChange({ target: { value: categoryFormat } }, 'category');
+        console.log(value);
+        handleInputChange({ target: { value: value } }, 'category');
     };
 
     const handleQuillChange = (content) => {
@@ -49,11 +61,13 @@ const PostForm = () => {
 
     const formPattern = [
         { formTitle: "title", formComponent: <TextInput type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'title')} /> },
+        { formTitle: "Image", formComponent: <TextInput type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'image')} /> },
         { formTitle: "author", formComponent: <TextInput type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'author')} /> },
         { formTitle: "date", formComponent: <DatePicker className="" onValueChange={(date) => handleInputChange({ target: { value: date } }, 'date')} /> },
         { formTitle: "description", formComponent: <TextInput type='string' placeholder="Type here." onChange={(e) => handleInputChange(e, 'description')} /> },
-        { formTitle: "content", formComponent: <ReactQuill className='displayer' theme="snow" onChange={handleQuillChange} /> },
         { formTitle: "category", formComponent: <CategorySelector setCategoryValue={setCategoryValue} /> },
+        { formTitle: "content", formComponent: <ReactQuill className='displayer' theme="snow" onChange={handleQuillChange} /> },
+        
     ];
 
     useEffect(() => {
@@ -142,8 +156,8 @@ const PostForm = () => {
     };
 
     return (
-        <div className='font-body w-[50%] text-PrimaryColors'>
-            <form className='flex gap-4 flex-col' onSubmit={postFormHandler}>
+        <div className='font-body w-[75%] flex gap-6 justify-center text-PrimaryColors'>
+            <form className='flex gap-4 flex-col w-1/2' onSubmit={postFormHandler}>
                 {formPattern.map((item, index) => (
                     <div key={index} className='flex flex-col'>
                         <label className='text-2xl font-bold'>{item.formTitle}</label>
@@ -163,6 +177,9 @@ const PostForm = () => {
                     </button>
                 </div>
             </form>
+            <div className=' w-1/2 h-1/2 bg-[#eee] rounded-myConf p-2 mt-6'>
+                <Image src={formData.image} className='rounded-[12px] w-1/2 h-1/2 ' alt='Image Displayer'/>
+            </div>
         </div>
     );
 };

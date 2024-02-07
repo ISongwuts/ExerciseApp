@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Gateway</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./style/index.css">
+</head>
+
+<body>
+    <div class="h-[100vh] w-[100vw] bg-[#303030] flex flex-col items-center">
+        <div class="w-full h-[4rem] border-b flex gap-2 text-xl items-center border-[#404040] px-12">
+            <span class="text-[#eee] font-bold">API Gateway For </span>
+            <span class="text-[#FF5858] font-bold"> ExerciseApp</span>
+        </div>
+        <span class="text-[#eee] mt-8 font-bold flex justify-start text-3xl">All dataset in our ExerciseApp</span>
+        <div class=" h-fit w-fit mt-8 p-6 bg-[#252525]">
+            <table class="text-[#eee]">
+                <thead>
+                    <tr class="border-b-2">
+                        <th>Our Content</th>
+                        <th>Content-Type</th>
+                        <th>Method</th>
+                        <th>API-URL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1. post: all posts in database</td>
+                        <td>application/json</td>
+                        <td class="method">GET</td>
+                        <td><a href="#">http://localhost:3001/api/...</a></td>
+                    </tr>
+                    <tr>
+                        <td>2. post: only post in database with id</td>
+                        <td>application/json</td>
+                        <td class="method">GET</td>
+                        <td><a href="#">http://localhost:3001/api/...</a></td>
+                    </tr>
+                    <tr>
+                        <td>3. post: update post with id</td>
+                        <td>application/json</td>
+                        <td class="method">PUT</td>
+                        <td><a href="#">http://localhost:3001/api/...</a></td>
+                    </tr>
+                    <tr>
+                        <td>4. post: upload post with id</td>
+                        <td>application/json</td>
+                        <td class="method">POST</td>
+                        <td><a href="#">http://localhost:3001/api/...</a></td>
+                    </tr>
+                    <tr>
+                        <td>4. post: delete post with id</td>
+                        <td>application/json</td>
+                        <td class="method">DELETE</td>
+                        <td><a href="#">http://localhost:3001/api/...</a></td>
+                    </tr>
+                    <tr>
+                        <td>5. user: all users in database</td>
+                        <td>application/json</td>
+                        <td class="method">GET</td>
+                        <td><a href="#">http://localhost:3001/api/...</a></td>
+                    </tr>
+                    <tr>
+                        <td>6. user: update user in database with id</td>
+                        <td>application/json</td>
+                        <td class="method">PUT</td>
+                        <td><a href="#">http://localhost:3001/api/...</a></td>
+                    </tr>
+                    <tr>
+                        <td>7. user: delete user in database with id</td>
+                        <td>application/json</td>
+                        <td class="method">DELETE</td>
+                        <td><a href="#">http://localhost:3001/api/...</a></td>
+                    </tr>
+                    <tr>
+                        <td>8. category: all category in database</td>
+                        <td>application/json</td>
+                        <td class="method">GET</td>
+                        <td><a href="#">http://localhost:3001/api/...</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

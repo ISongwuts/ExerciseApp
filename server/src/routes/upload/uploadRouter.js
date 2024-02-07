@@ -10,10 +10,10 @@ uploadRouter.post('/api/upload', async (req, res) => {
 
     try {
         const postData = req.body; // Extract data from the request body
-        const insertQuery = 'INSERT INTO post (post_id, post_title, post_desc, post_article, post_feedback, post_date, post_author, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        const insertQuery = 'INSERT INTO post (post_id, post_title, post_desc, post_article, post_feedback, post_date, post_author, cover_image, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
         // Execute the SQL query with the extracted data
-        db.query(insertQuery, [postData.id, postData.title, postData.description, postData.content, 0, postData.date, postData.author, postData.category], (error, result) => {
+        db.query(insertQuery, [postData.id, postData.title, postData.description, postData.content, 0, postData.date, postData.author, postData.image, postData.category], (error, result) => {
             if (error) {
                 console.error(error.message);
                 res.status(500).send('Internal Server Error');
@@ -37,10 +37,10 @@ uploadRouter.put('/api/upload/:postId', async (req, res) => {
         const postId = req.params.postId;
         const postData = req.body; // Extract data from the request body
 
-        const updateQuery = 'UPDATE post SET post_title = ?, post_desc = ?, post_article = ?, post_feedback = ?, post_date = ?, post_author = ?, category_id = ? WHERE post_id = ?';
+        const updateQuery = 'UPDATE post SET post_title = ?, post_desc = ?, post_article = ?, post_feedback = ?, post_date = ?, post_author = ?, category_id = ?, cover_image = ? WHERE post_id = ?';
 
         // Execute the SQL query with the extracted data
-        db.query(updateQuery, [postData.title, postData.description, postData.content, postData.feedback, postData.date, postData.author, postData.category, postId], (error, result) => {
+        db.query(updateQuery, [postData.title, postData.description, postData.content, postData.feedback, postData.date, postData.author, postData.category, postData.image, postId], (error, result) => {
             if (error) {
                 console.error(error.message);
                 res.status(500).send('Internal Server Error');
