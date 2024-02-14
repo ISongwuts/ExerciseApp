@@ -48,14 +48,14 @@ function ContentPage(props) {
 
   const fetchData = useCallback(async (category, page) => {
     try {
-      let apiUrl = `http://localhost:3001/api/post/`;
+      let apiUrl = `http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/post/`;
 
       if (category === null || category === 'category-000') {
         apiUrl += `page=${page}`;
         const contentResponse = await fetch(apiUrl);
         const contentJson = await contentResponse.json();
         setContentData(contentJson);
-        const rowResponse = await fetch('http://localhost:3001/api/post/rowcount');
+        const rowResponse = await fetch('http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/post/rowcount');
         const rowJson = await rowResponse.json();
         setRowCount(rowJson.rowCount);
         console.log(rowCount);

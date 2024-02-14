@@ -11,7 +11,7 @@ function LoginModal(props) {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3001/api/user/login', {
+      const response = await fetch('http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

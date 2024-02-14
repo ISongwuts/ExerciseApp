@@ -13,7 +13,7 @@ const CategorySelector = (props) => {
     const [category, setCategory] = useState([]);
 
     const fetchCategory = async () => {
-        const res = await axios.get('http://localhost:3001/api/category');
+        const res = await axios.get('http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/category');
         setCategory(res.data);
         console.log(category)
     }

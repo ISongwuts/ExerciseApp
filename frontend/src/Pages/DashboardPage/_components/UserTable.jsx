@@ -18,7 +18,7 @@ const UserTable = ({ modifier }, props) => {
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem('jwt');
-                const response = await axios.get(`http://localhost:3001/api/user`, {
+                const response = await axios.get(`http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/user`, {
                     headers: {
                         'authorization': `bearer ${token}`
                     }

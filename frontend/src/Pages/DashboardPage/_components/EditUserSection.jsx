@@ -29,7 +29,7 @@ function EditUserSection({ user_id, username, password, email, birth, role }, pr
     event.preventDefault();
     setTimeout(async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/user/${userData.user_id}`, {
+        const response = await fetch(`http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/user/${userData.user_id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

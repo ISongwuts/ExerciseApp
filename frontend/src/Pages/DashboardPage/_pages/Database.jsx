@@ -30,7 +30,7 @@ const Database = () => {
     const deleteHandler = async (type, id) => {
         try {
             setDeleting(true);
-            const result = await axios.delete(`http://localhost:3001/api/${type}/delete/${id}`);
+            const result = await axios.delete(`http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/${type}/delete/${id}`);
             Swal.fire('Deleted!', `Good luck if you don't mean to do this.`, 'success');
             console.log(`${type} deleted successfully:`, result.data);
             setDeleting(false);

@@ -14,7 +14,7 @@ const RegisterForm = () => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const response = await axios.post('http://localhost:3001/api/user/register', data, {
+      const response = await axios.post('http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/user/register', data, {
         headers: {
           'Content-Type': 'application/json',
         },

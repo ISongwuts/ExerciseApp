@@ -13,7 +13,7 @@ const CategorySelector = (props) => {
     const [category, setCategory] = useState([]);
     
     const fetchCategory = async () =>{
-        const res = await axios.get('http://localhost:3001/api/category');
+        const res = await axios.get('http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/category');
         setCategory(res.data);
         console.log(category)
     }
@@ -73,7 +73,7 @@ const PostForm = () => {
     useEffect(() => {
         const getLatestPostID = async () => {
             try {
-                const response = await fetch('http://localhost:3001/api/post/latestPostID');
+                const response = await fetch('http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/post/latestPostID');
                 const data = await response.json();
                 const numericPart = parseInt(data.latestPostID.split('-')[1], 10);
                 const nextNumericPart = numericPart + 1;
@@ -97,7 +97,7 @@ const PostForm = () => {
         event.preventDefault();
         setTimeout(async () => {
             try {
-                const response = await fetch('http://localhost:3001/api/upload', {
+                const response = await fetch('http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/upload', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

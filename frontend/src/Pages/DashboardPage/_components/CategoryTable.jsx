@@ -8,7 +8,7 @@ const CategoryTable = ({ modifier }, props) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-              const response = await axios.get('http://localhost:3001/api/category');
+              const response = await axios.get('http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/category');
               setCategory(response.data);
             } catch (error) {
               console.error('Error fetching category data:', error);
