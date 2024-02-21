@@ -7,7 +7,7 @@ const categoryRouter = require('./routes/category/categoryRouter');
 const uploadRouter = require('./routes/upload/uploadRouter');
 
 const app = express();
-const PORT = '3001';
+const PORT = 8000;
 app.use(cors({
     credentials: true,
     origin: 'http://localhost:5173'

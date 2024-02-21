@@ -34,6 +34,7 @@ postRouter.delete('/api/post/delete/:post_id', async (req, res) => {
 postRouter.get('/api/post/search', async (req, res) => {
     const { search } = req.query;
     try {
+        
         const query = `SELECT * FROM post 
                        WHERE post_id LIKE ? OR 
                        post_title LIKE ? OR
