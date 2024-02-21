@@ -171,7 +171,7 @@ function ContentPage(props) {
             currentPage={currentPage}
             totalPages={Math.ceil(rowCount / itemsPerPage)}
             onPageChange={(newPage) => setCurrentPage(newPage)}
-          />
+          /> 
         )
       )}
     </div>

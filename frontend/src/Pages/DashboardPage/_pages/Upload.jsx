@@ -5,7 +5,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import Swal from 'sweetalert2';
-import { Image } from 'mui-image'
+import { Image } from 'mui-image';
 import axios from 'axios';
 
 const CategorySelector = (props) => {
@@ -17,6 +17,7 @@ const CategorySelector = (props) => {
         setCategory(res.data);
         console.log(category)
     }
+
     useEffect(()=>{
         fetchCategory();
     }, [])  
@@ -118,7 +119,6 @@ const PostForm = () => {
             }
         }, 2000);
         setUploading(true);
-
     };
 
     const handleInputChange = (e, field) => {

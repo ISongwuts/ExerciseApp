@@ -2,9 +2,18 @@ import React from 'react';
 import mascot from '../../assets/png/mascot.png';
 import Swal from 'sweetalert2';
 import { useForm, Controller } from 'react-hook-form';
-import schema from './schema.validator';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
+import * as yup from 'yup';
+import moment from 'moment';
+
+const schema = yup.object().shape({
+  username: yup.string().required('Username is required').max(20, 'Username must be at most 20 characters'),
+  email: yup.string().required('Email is required').email('Invalid email address'),
+  password: yup.string().required('Password is required').min(8, 'Password must be at least 8 characters'),
+  confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
+  birth: yup.date().required('Birth date is required'),
+});
 
 const RegisterForm = () => {
   const { control, handleSubmit, formState: { errors }, getValues } = useForm({
@@ -12,9 +21,14 @@ const RegisterForm = () => {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
+    const reformatData = {
+      ...data,
+      birth: moment.utc(data.birth).format('MM/DD/YY'),
+      role: 'user'
+    };
+    console.log(reformatData);
     try {
-      const response = await axios.post('http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/user/register', data, {
+      const response = await axios.post('http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/user/register', reformatData, {
         headers: {
           'Content-Type': 'application/json',
         },

@@ -15,12 +15,12 @@ function Navbar(props) {
 
     useEffect(() => {
         if (user) {
-            Cookies.set('userData', JSON.stringify(user));
+            sessionStorage.setItem('userData', JSON.stringify(user));
         }
     }, [user]);
 
     useEffect(() => {
-        const userDataFromCookie = Cookies.get('userData');
+        const userDataFromCookie = sessionStorage.getItem('userData');
         if (userDataFromCookie && !user) {
             const parsedUserData = JSON.parse(userDataFromCookie);
             login(parsedUserData);
