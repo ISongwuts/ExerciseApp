@@ -13,7 +13,7 @@ const CategorySelector = (props) => {
     const [category, setCategory] = useState([]);
 
     const fetchCategory = async () => {
-        const res = await axios.get('http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/category');
+        const res = await axios.get('http://localhost:8000/api/category');
         setCategory(res.data);
         console.log(category)
     }
@@ -80,7 +80,7 @@ const PostForm = ({ post_id, post_title, post_desc, post_article, post_date, pos
         event.preventDefault();
         setTimeout(async () => {
             try {
-                const response = await fetch(`http://localhost:3001/api/upload/${formData.id}`, {
+                const response = await fetch(`http://localhost:8000/api/upload/${formData.id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',

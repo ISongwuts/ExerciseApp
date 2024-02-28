@@ -28,7 +28,7 @@ const RegisterForm = () => {
     };
     console.log(reformatData);
     try {
-      const response = await axios.post('http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/user/register', reformatData, {
+      const response = await axios.post('http://localhost:8000/api/user/register', reformatData, {
         headers: {
           'Content-Type': 'application/json',
         },

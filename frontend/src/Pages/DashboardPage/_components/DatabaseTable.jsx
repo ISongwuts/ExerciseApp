@@ -18,30 +18,6 @@ const TableComponent = ({ headers, data, modifierButtons, isLoading }) => {
     const [rowSelection, setRowSelection] = useState({})
 
     const columns = [
-        {
-            id: 'select',
-            header: ({ table }) => (
-                <IndeterminateCheckbox
-                    {...{
-                        checked: table.getIsAllRowsSelected(),
-                        indeterminate: table.getIsSomeRowsSelected(),
-                        onChange: table.getToggleAllRowsSelectedHandler(),
-                    }}
-                />
-            ),
-            cell: ({ row }) => (
-                <div className="px-1 text-center">
-                    <IndeterminateCheckbox
-                        {...{
-                            checked: row.getIsSelected(),
-                            disabled: !row.getCanSelect(),
-                            indeterminate: row.getIsSomeSelected(),
-                            onChange: row.getToggleSelectedHandler(),
-                        }}
-                    />
-                </div>
-            ),
-        },
         ...headers.map((name, index) => ({
             ...columnHelper.accessor(name, {
                 cell: (item) => (
@@ -252,21 +228,3 @@ const TableComponent = ({ headers, data, modifierButtons, isLoading }) => {
 
 export default TableComponent;
 
-function IndeterminateCheckbox({ indeterminate, className = '', ...rest }) {
-    const ref = React.useRef(null);
-
-    React.useEffect(() => {
-        if (typeof indeterminate === 'boolean') {
-            ref.current.indeterminate = !rest.checked && indeterminate;
-        }
-    }, [ref, indeterminate]);
-
-    return (
-        <input
-            type="checkbox"
-            ref={ref}
-            className={className + ' cursor-pointer h-5 w-5 accent-PrimaryColors'}
-            {...rest}
-        />
-    );
-}

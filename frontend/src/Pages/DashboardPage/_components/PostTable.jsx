@@ -16,7 +16,7 @@ const PostTable = ({ modifier }, props) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api/post');
+                const response = await axios.get('http://localhost:8000/api/post');
                 const result = await response.data;
                 setPostData(result);
             } catch (error) {
@@ -34,7 +34,7 @@ const PostTable = ({ modifier }, props) => {
         console.log(search);
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/post/search/?search=${search}`);
+                const response = await axios.get(`http://localhost:8000/api/post/search/?search=${search}`);
                 const result = await response.data;
                 setPostData(result);
             } catch (error) {

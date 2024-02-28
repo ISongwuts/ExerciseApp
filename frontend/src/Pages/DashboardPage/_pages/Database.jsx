@@ -30,7 +30,7 @@ const Database = () => {
     const deleteHandler = async (type, id) => {
         try {
             setDeleting(true);
-            const result = await axios.delete(`http://exerciseapp-server.agf0g3h4e2d2hwgm.southeastasia.azurecontainer.io:8000/api/${type}/delete/${id}`);
+            const result = await axios.delete(`http://localhost:8000/api/${type}/delete/${id}`);
             Swal.fire('Deleted!', `Good luck if you don't mean to do this.`, 'success');
             console.log(`${type} deleted successfully:`, result.data);
             setDeleting(false);
@@ -46,7 +46,7 @@ const Database = () => {
             const type = keys.includes('post_id') ? 'post' : 'user';
             const id = rowData[type + '_id'];
             Swal.fire({
-                title: 'Are you sure?',
+                title: `Are you sure for deleting ID: ${id}?`,
                 text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
