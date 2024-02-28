@@ -18,6 +18,7 @@ const PostTable = ({ modifier }, props) => {
             try {
                 const response = await axios.get('http://localhost:8000/api/post');
                 const result = await response.data;
+                console.log(result)
                 setPostData(result);
             } catch (error) {
                 console.error('Error fetching post data:', error);
@@ -44,7 +45,7 @@ const PostTable = ({ modifier }, props) => {
         fetchData();
     }, [search]);
 
-    const tableHeaders = ['post_id', 'post_title', 'post_desc', 'post_article', 'post_date', 'post_feedback', 'post_author', 'cover_image'];
+    const tableHeaders = ['post_id', 'post_title', 'post_desc', 'post_article', 'post_date', 'category_name', 'post_author', 'cover_image'];
 
     return (
         <div className='flex flex-col gap-4'>

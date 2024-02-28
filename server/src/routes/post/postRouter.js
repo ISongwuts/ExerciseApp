@@ -34,9 +34,12 @@ postRouter.delete('/api/post/delete/:post_id', async (req, res) => {
 postRouter.get('/api/post/search', async (req, res) => {
     const { search } = req.query;
     try {
-        
-        const query = `SELECT * FROM post 
-                       WHERE post_id LIKE ? OR 
+
+        const query = `
+                    SELECT post_id, post_title, post_desc, post_article, post_date, category_name, cover_image, post_author
+                    FROM post INNER JOIN category
+                    ON post.category_id = category.category_id
+                    WHERE post_id LIKE ? OR 
                        post_title LIKE ? OR
                        post_desc LIKE ? OR
                        post_article LIKE ? OR
@@ -94,10 +97,14 @@ postRouter.get('/api/post/rowcount', async (req, res) => {
 postRouter.get('/api/post', async (req, res) => {
     try {
         const result = await new Promise((resolve, reject) => {
-            db.query("SELECT * FROM post", (err, result) => {
-                if (err) reject(err);
-                else resolve(result);
-            });
+            db.query(`
+                SELECT post_id, post_title, post_desc, post_article, post_date, category_name, cover_image, post_author
+                FROM post INNER JOIN category
+                ON post.category_id = category.category_id`
+                , (err, result) => {
+                    if (err) reject(err);
+                    else resolve(result);
+                });
         });
         res.send(result);
     } catch (error) {
